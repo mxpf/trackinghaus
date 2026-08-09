@@ -1,5 +1,7 @@
 import {
   allowedOrigin,
+  repositoryUrl,
+  siteConfigured,
   siteKey,
   siteName,
   timeZone,
@@ -11,6 +13,7 @@ import { buildWeeklySummary } from "../lib/summary.js";
 
 export default async function handler(request, response) {
   if (request.method !== "GET") return methodNotAllowed(response, ["GET"]);
+  if (!siteConfigured()) return json(response, 503, { error: "site_not_configured" });
   if (!databaseConfigured()) return json(response, 503, { error: "storage_not_configured" });
 
   try {
@@ -20,7 +23,12 @@ export default async function handler(request, response) {
     const summary = buildWeeklySummary(rows, { endDate: today, today });
     return json(response, 200, {
       ...summary,
-      site: { key: siteKey(), name: siteName(), origin: allowedOrigin() },
+      site: {
+        key: siteKey(),
+        name: siteName(),
+        origin: allowedOrigin(),
+        repository: repositoryUrl(),
+      },
     });
   } catch (error) {
     console.error("trackinghaus_weekly_failed", error);

@@ -170,6 +170,7 @@ function WritingView({ data, onBack }) {
 
 function SetupView({ code }) {
   const copy = {
+    site_not_configured: "Add your blog details in the Trackinghaus alpha environment settings.",
     storage_not_configured: "Connect the Trackinghaus alpha database in Vercel.",
   }[code];
   return (
@@ -212,6 +213,7 @@ export function App() {
   };
 
   const ready = state.status === "ready";
+  const site = ready ? state.data.site : null;
   return (
     <div className="app-shell">
       <header className="brand">
@@ -237,9 +239,11 @@ export function App() {
       </main>
 
       <footer className="site-footer">
-        <a className="footer-brand text-link" href="https://thinking.haus">
-          Thinkinghaus
-        </a>
+        {site?.origin ? (
+          <a className="footer-brand text-link" href={site.origin}>
+            {site.name}
+          </a>
+        ) : null}
         {ready ? (
           <nav className="footer-nav" aria-label="Primary">
             <button
@@ -250,7 +254,7 @@ export function App() {
             >
               Writing
             </button>
-            <a className="text-link" href="https://github.com/mxpf/trackinghaus">
+            <a className="text-link" href={site.repository}>
               GitHub
             </a>
           </nav>

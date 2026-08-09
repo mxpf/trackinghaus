@@ -12,12 +12,14 @@ test("tracker sends aggregate context without visitor identifiers", async () => 
   assert.doesNotMatch(tracker, /fingerprint/i);
 });
 
-test("public footer links back to Thinkinghaus and the source repository", async () => {
+test("public footer links back to the configured blog and source repository", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
   const summary = await readFile(new URL("../lib/summary.js", import.meta.url), "utf8");
-  assert.match(app, /href="https:\/\/thinking\.haus"/);
-  assert.match(app, /href="https:\/\/github\.com\/mxpf\/trackinghaus"/);
+  assert.match(app, /href=\{site\.origin\}/);
+  assert.match(app, /\{site\.name\}/);
+  assert.match(app, /href=\{site\.repository\}/);
+  assert.doesNotMatch(app, /thinking\.haus/);
   assert.match(
     summary,
     /No individual visitors are identified\. Trackinghaus alpha stores only aggregate counters\./,

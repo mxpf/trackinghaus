@@ -18,9 +18,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Desktop uses an asymmetric two-column composition with the product name at upper left, the weekly reading in the right column, and navigation/privacy language along the bottom edge.
 - The product is an anti-dashboard for independent writers: one useful weekly observation, evidence on demand, and no visitor profiles or cookies.
 
-## Public alpha contract
+## Public self-hosting contract
 
-- The first live site is `thinking.haus`; the default site key is `thinkinghaus` and the reporting timezone is `America/New_York`.
+- The first reference deployment is configured for `thinking.haus`, but the public codebase is site-neutral. A blog’s key, name, allowed origins, timezone, dashboard URL, repository URL, database, and email settings belong in environment variables rather than source.
+- One deployment tracks one blog. A writer’s personal instance uses the same public codebase; do not create or document a separate Thinkinghaus-only version.
 - Collection is aggregate-only. Never store or transmit IP addresses, user agents, cookies, visitor IDs, raw referrer URLs, query strings, or URL fragments.
 - Returning status is a browser-local boolean only. Session storage prevents duplicate counts for the same page/day; the server never receives the local key.
 - Respect Global Privacy Control and Do Not Track.
@@ -31,7 +32,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The main area has no Writing link; Writing appears only in the footer.
 - Match Thinkinghaus typography throughout at 18px/24px. Desktop uses Thinkinghaus’s 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
 - Chart points use centered numeric dates only; do not restore weekday labels or a “Today” label. The evidence note describes the strongest source only, while the privacy promise appears once in the footer. Mobile evidence and footer spacing should remain compact.
-- The separate bottom footer mirrors Thinkinghaus: Thinkinghaus links from the left column; Writing and the Trackinghaus GitHub repository sit in the right column. Footer links have no underlines.
+- The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column; Writing and the deployment’s GitHub repository sit in the right column. Footer links have no underlines.
 - Keep paragraph groups compact: one 24px line or at most two 24px lines of vertical space between related blocks.
 - Weekly language is deterministic for the alpha. Analytics chooses the signal; no LLM is required to operate the product.
-- Monday email delivery uses Resend and an idempotency key derived from the reporting week.
+- Monday email delivery is optional, uses Resend, and has an idempotency key derived from the reporting week. A deployment without email configuration remains healthy and serves the public dashboard.

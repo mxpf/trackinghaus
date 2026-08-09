@@ -30,5 +30,10 @@ export const demoWeekly = {
     { path: "/the-shape-of-enough", title: "The Shape of Enough", readers: 26, change: 3 },
     { path: "/against-the-dashboard", title: "Against the Dashboard", readers: 19, change: 0 },
   ],
-  site: { key: "thinkinghaus", name: "Thinkinghaus", origin: "https://thinking.haus" },
+  site: {
+    key: "example-blog",
+    name: "Example blog",
+    origin: "https://example.com",
+    repository: "https://github.com/mxpf/trackinghaus",
+  },
 };
