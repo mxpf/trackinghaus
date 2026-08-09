@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trackinghaus visual QA</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #e8e8e4;
+        color: #1c1c1a;
+        font: 14px/20px -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      }
+      main {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+      figure { margin: 0; }
+      figcaption { margin-bottom: 8px; }
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid rgba(28, 28, 26, 0.25);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <figure>
+        <figcaption>Selected reference</figcaption>
+        <img src="../reference/trackinghaus-selected.png" alt="Selected Trackinghaus reference" />
+      </figure>
+      <figure>
+        <figcaption>Alpha implementation</figcaption>
+        <img src="alpha-weekly-desktop.jpg" alt="Trackinghaus alpha implementation" />
+      </figure>
+    </main>
+  </body>
+</html>

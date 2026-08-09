@@ -1,0 +1,271 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { loadWeekly } from "./api.js";
+import { demoWeekly } from "./demo-data.js";
+
+function splitDetail(detail) {
+  const boundary = detail.indexOf(". ");
+  if (boundary === -1) return [detail, ""];
+  return [detail.slice(0, boundary + 1), detail.slice(boundary + 2)];
+}
+
+function changeLabel(change) {
+  if (!change) return "—";
+  return change > 0 ? `+${change}` : String(change);
+}
+
+function TrendChart({ days }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return undefined;
+
+    const draw = () => {
+      const bounds = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.round(bounds.width * ratio);
+      canvas.height = Math.round(bounds.height * ratio);
+
+      const context = canvas.getContext("2d");
+      context.scale(ratio, ratio);
+      context.clearRect(0, 0, bounds.width, bounds.height);
+
+      const left = 6;
+      const right = bounds.width - 8;
+      const pointTop = 29;
+      const pointBottom = 78;
+      const values = days.map((item) => item.value);
+      const minimum = Math.min(...values);
+      const maximum = Math.max(...values);
+      const spread = maximum - minimum;
+      const points = days.map((item, index) => ({
+        x: left + (index * (right - left)) / Math.max(days.length - 1, 1),
+        y:
+          spread === 0
+            ? (pointTop + pointBottom) / 2
+            : pointBottom -
+              ((item.value - minimum) / spread) * (pointBottom - pointTop),
+      }));
+
+      context.strokeStyle = "#1c1c1a";
+      context.lineWidth = 1.5;
+      context.lineJoin = "round";
+      context.lineCap = "round";
+      context.beginPath();
+      points.forEach((point, index) => {
+        if (index === 0) context.moveTo(point.x, point.y);
+        else context.lineTo(point.x, point.y);
+      });
+      context.stroke();
+
+      context.fillStyle = "#1c1c1a";
+      points.forEach((point) => {
+        context.beginPath();
+        context.arc(point.x, point.y, 3.6, 0, Math.PI * 2);
+        context.fill();
+      });
+
+      const family = '"Untitled Sans", "Helvetica Neue", Helvetica, Arial, sans-serif';
+      context.font = `400 18px ${family}`;
+      context.textBaseline = "top";
+
+      days.forEach((item, index) => {
+        const x = points[index].x;
+        context.textAlign =
+          index === 0 ? "left" : index === days.length - 1 ? "right" : "center";
+        context.fillText(item.day, x, 145);
+        context.fillText(item.date, x, 174);
+
+        if (item.today) {
+          const text = "Today";
+          context.textAlign = "center";
+          context.fillText(text, x, 203);
+          const width = context.measureText(text).width;
+          context.lineWidth = 1;
+          context.beginPath();
+          context.moveTo(x - width / 2, 222);
+          context.lineTo(x + width / 2, 222);
+          context.stroke();
+        }
+      });
+    };
+
+    draw();
+    const observer = new ResizeObserver(draw);
+    observer.observe(canvas);
+    return () => observer.disconnect();
+  }, [days]);
+
+  const caption = `Daily reads from ${days[0]?.date || "the start of the week"} through ${days.at(-1)?.date || "today"}: ${days.map((day) => day.value).join(", ")}.`;
+
+  return (
+    <figure className="trend" aria-labelledby="trend-caption">
+      <canvas ref={canvasRef} className="trend-canvas" aria-hidden="true" />
+      <figcaption id="trend-caption" className="visually-hidden">
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+function WeeklyReading({ data }) {
+  const [firstDetail, secondDetail] = splitDetail(data.insight.detail);
+  return (
+    <section aria-labelledby="week-title">
+      <header className="period">
+        <h1 id="week-title">This week</h1>
+        <p>{data.range.label}</p>
+      </header>
+
+      <div className="insight">
+        <h2>{data.insight.headline}</h2>
+        <p>
+          <span className="nowrap">{firstDetail}</span>
+          {secondDetail ? (
+            <>
+              <br />
+              {secondDetail}
+            </>
+          ) : null}
+        </p>
+      </div>
+
+      <TrendChart days={data.days} />
+
+      <section className="evidence" id="evidence" aria-labelledby="evidence-title">
+        <h2 id="evidence-title">What changed</h2>
+        <dl>
+          {data.evidence.map((item) => (
+            <div key={item.label}>
+              <dt>{item.label}</dt>
+              <dd>
+                {item.value} {item.suffix}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p>{data.evidenceNote}</p>
+      </section>
+    </section>
+  );
+}
+
+function WritingView({ data, onBack }) {
+  return (
+    <section className="secondary-view" aria-labelledby="writing-title">
+      <header className="period">
+        <h1 id="writing-title">All writing</h1>
+        <p>{data.range.label}</p>
+      </header>
+
+      {data.writing.length ? (
+        <ol className="writing-list">
+          {data.writing.map((item) => (
+            <li key={item.path}>
+              <span>{item.title}</span>
+              <span>{item.readers} reads</span>
+              <span aria-label={`${changeLabel(item.change)} reads from last week`}>
+                {changeLabel(item.change)}
+              </span>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p className="empty-reading">The first writing list appears after a few visits.</p>
+      )}
+
+      <button className="text-link" type="button" onClick={onBack}>
+        This week
+      </button>
+    </section>
+  );
+}
+
+function SetupView({ code }) {
+  const copy = {
+    storage_not_configured: "Connect the Trackinghaus database in Vercel.",
+  }[code];
+  return (
+    <section className="access-view" aria-labelledby="setup-title">
+      <header className="period">
+        <h1 id="setup-title">Almost ready</h1>
+        <p>Trackinghaus setup</p>
+      </header>
+      <p className="setup-message">{copy || "Trackinghaus needs its production configuration."}</p>
+    </section>
+  );
+}
+
+export function App() {
+  const demoMode = import.meta.env.DEV && import.meta.env.VITE_USE_LIVE_API !== "true";
+  const [view, setView] = useState("week");
+  const [state, setState] = useState({
+    status: demoMode ? "ready" : "loading",
+    data: demoMode ? demoWeekly : null,
+    code: null,
+  });
+  const refresh = useCallback(async () => {
+    try {
+      const data = await loadWeekly();
+      setState({ status: "ready", data, code: null });
+    } catch (error) {
+      if (error.status === 503) {
+        setState({ status: "setup", data: null, code: error.code });
+      } else setState({ status: "error", data: null, code: error.code });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!demoMode) refresh();
+  }, [demoMode, refresh]);
+
+  const show = (nextView) => {
+    setView(nextView);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+
+  const ready = state.status === "ready";
+  return (
+    <div className="app-shell">
+      <header className="brand">
+        <button type="button" onClick={() => (ready ? show("week") : undefined)}>
+          Trackinghaus
+        </button>
+      </header>
+
+      <main className="content" aria-live="polite" aria-busy={state.status === "loading"}>
+        {state.status === "loading" ? (
+          <p className="loading-copy">Opening Trackinghaus…</p>
+        ) : state.status === "setup" ? (
+          <SetupView code={state.code} />
+        ) : state.status === "error" ? (
+          <SetupView code="unknown" />
+        ) : view === "week" ? (
+          <WeeklyReading
+            data={state.data}
+          />
+        ) : (
+          <WritingView data={state.data} onBack={() => show("week")} />
+        )}
+      </main>
+
+      <footer className="site-footer">
+        {ready ? (
+          <nav className="footer-nav" aria-label="Primary">
+            <button
+              className="text-link"
+              type="button"
+              aria-current={view === "writing" ? "page" : undefined}
+              onClick={() => show("writing")}
+            >
+              Writing
+            </button>
+          </nav>
+        ) : null}
+        <p className="privacy">
+          No individual visitors are identified. Trackinghaus stores only aggregate counters.
+        </p>
+      </footer>
+    </div>
+  );
+}
