@@ -71,20 +71,25 @@ function TrendChart({ days }) {
 
       days.forEach((item, index) => {
         const x = points[index].x;
-        context.textAlign =
+        const textAlign =
           index === 0 ? "left" : index === days.length - 1 ? "right" : "center";
+        context.textAlign = textAlign;
         context.fillText(item.day, x, 145);
         context.fillText(item.date, x, 174);
 
         if (item.today) {
           const text = "Today";
-          context.textAlign = "center";
+          context.textAlign = textAlign;
           context.fillText(text, x, 203);
           const width = context.measureText(text).width;
+          const underlineStart =
+            textAlign === "left" ? x : textAlign === "right" ? x - width : x - width / 2;
+          const underlineEnd =
+            textAlign === "left" ? x + width : textAlign === "right" ? x : x + width / 2;
           context.lineWidth = 1;
           context.beginPath();
-          context.moveTo(x - width / 2, 222);
-          context.lineTo(x + width / 2, 222);
+          context.moveTo(underlineStart, 222);
+          context.lineTo(underlineEnd, 222);
           context.stroke();
         }
       });
