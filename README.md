@@ -107,8 +107,9 @@ The tracker does not send or store an IP address, user agent, cookie, visitor ID
 npm install
 npm run dev
 npm test
-npm run build
 ```
+
+The test command builds both deployment targets before running the suite, so it also verifies the packaged output from a clean checkout.
 
 The local Vite view uses representative demo data. Copy `.env.example` to `.env.local` and use a Vercel-linked development environment only when testing the live functions. Never commit a populated environment file.
 
