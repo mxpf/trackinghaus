@@ -23,6 +23,8 @@ test("public footer links back to Thinkinghaus and the source repository", async
     /No individual visitors are identified\. Trackinghaus stores only aggregate counters\./,
   );
   assert.match(styles, /\.site-footer \.text-link\s*{[^}]*text-decoration:\s*none;/s);
+  assert.doesNotMatch(styles, /color:\s*rgba\(/);
+  assert.doesNotMatch(styles, /\.loading-copy\s*{[^}]*opacity:/s);
   assert.doesNotMatch(app, /className="privacy"/);
   assert.doesNotMatch(app, /fillText\(item\.day/);
   assert.doesNotMatch(app, /"Today"/);

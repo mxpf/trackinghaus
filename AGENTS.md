@@ -14,6 +14,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The selected mock in `reference/trackinghaus-selected.png` is the visual source of truth.
 - Use the Thinkinghaus “super normal” language: warm off-white `#f7f6f2`, near-black `#1c1c1a`, generous empty space, quiet underlined links, and no cards, shadows, gradients, or decorative UI.
 - Typography is Untitled Sans first, with `Helvetica Neue`, Helvetica, and Arial as fallbacks. Default copy is 18px/24px at regular weight.
+- All resting copy uses the same Thinkinghaus ink color, `#1c1c1a`; do not mute evidence labels, values, writing metadata, or loading copy with gray or reduced opacity. Hover and disabled-state opacity may still communicate interaction state.
 - Desktop uses an asymmetric two-column composition with the product name at upper left, the weekly reading in the right column, and navigation/privacy language along the bottom edge.
 - The product is an anti-dashboard for independent writers: one useful weekly observation, evidence on demand, and no visitor profiles or cookies.
 

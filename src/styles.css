@@ -160,10 +160,6 @@ h2 {
   margin-top: 24px;
 }
 
-.evidence dt {
-  color: rgba(28, 28, 26, 0.62);
-}
-
 .evidence dd {
   margin-top: 5px;
 }
@@ -202,21 +198,12 @@ h2 {
   border-top: 1px solid rgba(28, 28, 26, 0.28);
 }
 
-.writing-list li span:nth-child(2),
-.writing-list li span:nth-child(3) {
-  color: rgba(28, 28, 26, 0.62);
-}
-
 .writing-list li span:nth-child(3) {
   text-align: right;
 }
 
 .access-view {
   min-height: 420px;
-}
-
-.loading-copy {
-  opacity: 0.62;
 }
 
 .site-footer {
