@@ -74,17 +74,6 @@ function TrendChart({ days }) {
         const x = points[index].x;
         context.textAlign = "center";
         context.fillText(item.date, x, 154);
-
-        if (item.today) {
-          const text = "Today";
-          context.fillText(text, x, 184);
-          const width = context.measureText(text).width;
-          context.lineWidth = 1;
-          context.beginPath();
-          context.moveTo(x - width / 2, 203);
-          context.lineTo(x + width / 2, 203);
-          context.stroke();
-        }
       });
     };
 

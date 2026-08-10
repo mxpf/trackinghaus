@@ -20,4 +20,6 @@ test("public footer links back to Thinkinghaus and the source repository", async
     app,
     /No individual visitors are identified\. Trackinghaus stores only aggregate counters\./,
   );
+  assert.doesNotMatch(app, /fillText\(item\.day/);
+  assert.doesNotMatch(app, /"Today"/);
 });
