@@ -30,8 +30,9 @@ function TrendChart({ days }) {
       context.scale(ratio, ratio);
       context.clearRect(0, 0, bounds.width, bounds.height);
 
-      const left = 6;
-      const right = bounds.width - 8;
+      const labelInset = 24;
+      const left = labelInset;
+      const right = bounds.width - labelInset;
       const pointTop = 29;
       const pointBottom = 78;
       const values = days.map((item) => item.value);
@@ -71,25 +72,17 @@ function TrendChart({ days }) {
 
       days.forEach((item, index) => {
         const x = points[index].x;
-        const textAlign =
-          index === 0 ? "left" : index === days.length - 1 ? "right" : "center";
-        context.textAlign = textAlign;
-        context.fillText(item.day, x, 145);
-        context.fillText(item.date, x, 174);
+        context.textAlign = "center";
+        context.fillText(item.date, x, 154);
 
         if (item.today) {
           const text = "Today";
-          context.textAlign = textAlign;
-          context.fillText(text, x, 203);
+          context.fillText(text, x, 184);
           const width = context.measureText(text).width;
-          const underlineStart =
-            textAlign === "left" ? x : textAlign === "right" ? x - width : x - width / 2;
-          const underlineEnd =
-            textAlign === "left" ? x + width : textAlign === "right" ? x : x + width / 2;
           context.lineWidth = 1;
           context.beginPath();
-          context.moveTo(underlineStart, 222);
-          context.lineTo(underlineEnd, 222);
+          context.moveTo(x - width / 2, 203);
+          context.lineTo(x + width / 2, 203);
           context.stroke();
         }
       });
@@ -149,7 +142,7 @@ function WeeklyReading({ data }) {
             </div>
           ))}
         </dl>
-        <p>{data.evidenceNote}</p>
+        {data.evidenceNote ? <p>{data.evidenceNote}</p> : null}
       </section>
     </section>
   );
@@ -255,21 +248,29 @@ export function App() {
       </main>
 
       <footer className="site-footer">
-        {ready ? (
-          <nav className="footer-nav" aria-label="Primary">
-            <button
-              className="text-link"
-              type="button"
-              aria-current={view === "writing" ? "page" : undefined}
-              onClick={() => show("writing")}
-            >
-              Writing
-            </button>
-          </nav>
-        ) : null}
-        <p className="privacy">
-          No individual visitors are identified. Trackinghaus stores only aggregate counters.
-        </p>
+        <a className="footer-brand text-link" href="https://thinking.haus">
+          Thinkinghaus
+        </a>
+        <div className="footer-meta">
+          {ready ? (
+            <nav className="footer-nav" aria-label="Primary">
+              <button
+                className="text-link"
+                type="button"
+                aria-current={view === "writing" ? "page" : undefined}
+                onClick={() => show("writing")}
+              >
+                Writing
+              </button>
+              <a className="text-link" href="https://github.com/mxpf/trackinghaus">
+                GitHub
+              </a>
+            </nav>
+          ) : null}
+          <p className="privacy">
+            No individual visitors are identified. Trackinghaus stores only aggregate counters.
+          </p>
+        </div>
       </footer>
     </div>
   );
