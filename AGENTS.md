@@ -25,12 +25,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Respect Global Privacy Control and Do Not Track.
 - Store only daily counters by site, path/title, source category, and returning status in Neon Postgres.
 - The dashboard is public so it can be shared alongside Thinkinghaus; only aggregate counters may appear there.
-- The footer privacy statement is: “No individual visitors are identified. Trackinghaus stores only aggregate counters.” Do not restore the earlier “No profiles. No cookies.” wording.
+- The closing evidence paragraph ends with: “No individual visitors are identified. Trackinghaus stores only aggregate counters.” Do not duplicate that statement in the footer or restore the earlier “No profiles. No cookies.” wording.
 - There is no public Settings view or link. “What changed” is always visible beneath the weekly chart; do not collapse it behind a show/hide control.
 - The main area has no Writing link; Writing appears only in the footer.
 - Match Thinkinghaus typography throughout at 18px/24px. Desktop uses Thinkinghaus’s 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
 - Chart points use centered numeric dates only; do not restore weekday labels or a “Today” label. The evidence note describes the strongest source only, while the privacy promise appears once in the footer. Mobile evidence and footer spacing should remain compact.
-- The separate bottom footer mirrors Thinkinghaus: Thinkinghaus links from the left column; Writing and the Trackinghaus GitHub repository sit in the right column, followed by the single privacy statement.
+- The separate bottom footer mirrors Thinkinghaus: Thinkinghaus links from the left column; Writing and the Trackinghaus GitHub repository sit in the right column. Footer links have no underlines.
 - Keep paragraph groups compact: one 24px line or at most two 24px lines of vertical space between related blocks.
 - Weekly language is deterministic for the alpha. Analytics chooses the signal; no LLM is required to operate the product.
 - Monday email delivery uses Resend and an idempotency key derived from the reporting week.

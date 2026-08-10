@@ -19,13 +19,13 @@ The previous mobile capture and revised implementation were opened together in o
 - All interface text inherits Thinkinghaus’s 18px / 24px typography, and chart dates use compact month/day labels such as “8/3.”
 - The content column begins at the same top edge as the Trackinghaus wordmark. When the always-visible evidence makes the page taller than the viewport, the separate footer follows the content without overlap.
 - Mobile collapses to one column, keeps all seven days visible, and has no horizontal page overflow.
-- The footer mirrors Thinkinghaus: Thinkinghaus on the left column, Writing and GitHub on the right, with the privacy statement appearing once.
+- The footer mirrors Thinkinghaus: Thinkinghaus on the left column and Writing/GitHub on the right, with plain un-underlined links. The single privacy statement is merged into the evidence paragraph immediately above the footer.
 
 ## Functional review
 
 - “What changed” is present by default without a hide/show control.
 - The footer “Writing” control opens the writing list; there is no duplicate Writing link in the main area.
-- Footer links point to Thinkinghaus and the private Trackinghaus source repository.
+- Footer links point to Thinkinghaus and the public Trackinghaus source repository.
 - The public dashboard has no password, sign-in, or Settings view.
 - The Trackinghaus wordmark and “This week” controls return to the weekly reading.
 - The chart has a screen-reader summary, focus states are visible, and browser logs contain no errors.
@@ -35,6 +35,8 @@ The previous mobile capture and revised implementation were opened together in o
 
 - P2 found: mobile evidence rows, explanatory copy, Writing, and privacy text were separated by oversized gaps, while the evidence note repeated the footer’s privacy claim.
 - Fix: reduced related-block spacing to 24–48px, shortened the evidence note to the source observation only, and rebuilt the footer as a distinct two-column section.
+- P2 found: the separate privacy paragraph still made the footer unlike Thinkinghaus, and the footer links retained underlines.
+- Fix: merged privacy into the preceding evidence note, removed the footer paragraph, and removed underline decoration from all footer links.
 - P2 found: weekday plus numeric date labels created a crowded chart grid and forced edge-aligned labels.
 - Fix: removed weekdays and the redundant “Today” marker, inset the plot by 24px, and centered each numeric date under its point.
 - Post-fix evidence: `qa/implementation-mobile-current.png` shows compact evidence rows, one privacy statement, a distinct footer, and centered numeric dates without overflow. A subsequent 1280 × 720 live capture verifies the same chart with the “Today” label removed and no horizontal overflow.

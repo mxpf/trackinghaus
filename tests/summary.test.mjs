@@ -44,7 +44,10 @@ test("builds a seven-day reading and compares it with the previous week", () => 
   assert.equal(summary.days.at(-1).today, true);
   assert.equal(summary.days[0].date, "8/3");
   assert.equal(summary.days.at(-1).date, "8/9");
-  assert.equal(summary.evidenceNote, "Search accounted for 69% of this week’s reading.");
+  assert.equal(
+    summary.evidenceNote,
+    "Search accounted for 69% of this week’s reading. No individual visitors are identified. Trackinghaus stores only aggregate counters.",
+  );
 });
 
 test("returns a quiet first-run reading when there is no data", () => {
@@ -52,5 +55,8 @@ test("returns a quiet first-run reading when there is no data", () => {
   assert.equal(summary.insight.total, 0);
   assert.equal(summary.writing.length, 0);
   assert.equal(summary.insight.headline, "Not enough happened yet.");
-  assert.equal(summary.evidenceNote, null);
+  assert.equal(
+    summary.evidenceNote,
+    "No individual visitors are identified. Trackinghaus stores only aggregate counters.",
+  );
 });

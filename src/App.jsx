@@ -240,26 +240,21 @@ export function App() {
         <a className="footer-brand text-link" href="https://thinking.haus">
           Thinkinghaus
         </a>
-        <div className="footer-meta">
-          {ready ? (
-            <nav className="footer-nav" aria-label="Primary">
-              <button
-                className="text-link"
-                type="button"
-                aria-current={view === "writing" ? "page" : undefined}
-                onClick={() => show("writing")}
-              >
-                Writing
-              </button>
-              <a className="text-link" href="https://github.com/mxpf/trackinghaus">
-                GitHub
-              </a>
-            </nav>
-          ) : null}
-          <p className="privacy">
-            No individual visitors are identified. Trackinghaus stores only aggregate counters.
-          </p>
-        </div>
+        {ready ? (
+          <nav className="footer-nav" aria-label="Primary">
+            <button
+              className="text-link"
+              type="button"
+              aria-current={view === "writing" ? "page" : undefined}
+              onClick={() => show("writing")}
+            >
+              Writing
+            </button>
+            <a className="text-link" href="https://github.com/mxpf/trackinghaus">
+              GitHub
+            </a>
+          </nav>
+        ) : null}
       </footer>
     </div>
   );

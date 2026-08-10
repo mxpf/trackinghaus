@@ -231,13 +231,13 @@ h2 {
   justify-self: start;
 }
 
-.footer-meta,
-.privacy {
+.site-footer .footer-nav {
+  justify-self: start;
   width: min(100%, 685px);
 }
 
-.privacy {
-  margin-top: 24px;
+.site-footer .text-link {
+  text-decoration: none;
 }
 
 .visually-hidden {
@@ -322,10 +322,6 @@ h2 {
     grid-template-columns: 1fr;
     row-gap: 24px;
     margin-top: 48px;
-  }
-
-  .privacy {
-    margin-top: 24px;
   }
 }
 
