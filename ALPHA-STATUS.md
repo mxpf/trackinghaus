@@ -32,6 +32,6 @@
 
 ## Publishing
 
-The Trackinghaus source is published from `github.com/mxpf/trackinghaus`. Thinkinghaus loads the tracker once from its shared layout.
+The Trackinghaus alpha source is published from `github.com/mxpf/trackinghaus`. Thinkinghaus loads the tracker once from its shared layout.
 
 No secret values should be written to source files or this document.

@@ -1,4 +1,4 @@
-# Trackinghaus design QA
+# Trackinghaus alpha design QA
 
 ## Inputs
 
@@ -18,7 +18,7 @@ The previous mobile capture and revised implementation were opened together in o
 - The chart preserves the seven-point shape. Numeric dates are centered directly beneath each point; weekday and “Today” labels are removed.
 - All interface text inherits Thinkinghaus’s 18px / 24px typography, and chart dates use compact month/day labels such as “8/3.”
 - All resting copy uses Thinkinghaus ink `#1c1c1a`; muted gray evidence labels and metadata were removed. Opacity changes remain only for hover and disabled interaction states.
-- The content column begins at the same top edge as the Trackinghaus wordmark. When the always-visible evidence makes the page taller than the viewport, the separate footer follows the content without overlap.
+- The content column begins at the same top edge as the Trackinghaus alpha wordmark. When the always-visible evidence makes the page taller than the viewport, the separate footer follows the content without overlap.
 - Mobile collapses to one column, keeps all seven days visible, and has no horizontal page overflow.
 - The footer mirrors Thinkinghaus: Thinkinghaus on the left column and Writing/GitHub on the right, with plain un-underlined links. The single privacy statement is merged into the evidence paragraph immediately above the footer.
 
@@ -28,7 +28,7 @@ The previous mobile capture and revised implementation were opened together in o
 - The footer “Writing” control opens the writing list; there is no duplicate Writing link in the main area.
 - Footer links point to Thinkinghaus and the public Trackinghaus source repository.
 - The public dashboard has no password, sign-in, or Settings view.
-- The Trackinghaus wordmark and “This week” controls return to the weekly reading.
+- The Trackinghaus alpha wordmark and “This week” controls return to the weekly reading.
 - The chart has a screen-reader summary, focus states are visible, and browser logs contain no errors.
 - The production build and all 10 automated tests pass; the browser console has no warnings or errors.
 

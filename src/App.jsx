@@ -170,15 +170,15 @@ function WritingView({ data, onBack }) {
 
 function SetupView({ code }) {
   const copy = {
-    storage_not_configured: "Connect the Trackinghaus database in Vercel.",
+    storage_not_configured: "Connect the Trackinghaus alpha database in Vercel.",
   }[code];
   return (
     <section className="access-view" aria-labelledby="setup-title">
       <header className="period">
         <h1 id="setup-title">Almost ready</h1>
-        <p>Trackinghaus setup</p>
+        <p>Trackinghaus alpha setup</p>
       </header>
-      <p className="setup-message">{copy || "Trackinghaus needs its production configuration."}</p>
+      <p className="setup-message">{copy || "Trackinghaus alpha needs its production configuration."}</p>
     </section>
   );
 }
@@ -216,13 +216,13 @@ export function App() {
     <div className="app-shell">
       <header className="brand">
         <button type="button" onClick={() => (ready ? show("week") : undefined)}>
-          Trackinghaus
+          Trackinghaus alpha
         </button>
       </header>
 
       <main className="content" aria-live="polite" aria-busy={state.status === "loading"}>
         {state.status === "loading" ? (
-          <p className="loading-copy">Opening Trackinghaus…</p>
+          <p className="loading-copy">Opening Trackinghaus alpha…</p>
         ) : state.status === "setup" ? (
           <SetupView code={state.code} />
         ) : state.status === "error" ? (

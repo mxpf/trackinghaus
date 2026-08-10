@@ -23,7 +23,7 @@ export const demoWeekly = {
     { label: "Returning", value: 17, suffix: "reads" },
   ],
   evidenceNote:
-    "Search accounted for 44% of this week’s reading. No individual visitors are identified. Trackinghaus stores only aggregate counters.",
+    "Search accounted for 44% of this week’s reading. No individual visitors are identified. Trackinghaus alpha stores only aggregate counters.",
   writing: [
     { path: "/notes-on-quiet-software", title: "Notes on Quiet Software", readers: 78, change: 42 },
     { path: "/a-small-internet", title: "A Small Internet", readers: 41, change: 9 },

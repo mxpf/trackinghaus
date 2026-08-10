@@ -1,6 +1,6 @@
 # Trackinghaus alpha
 
-Trackinghaus is a deliberately small analytics product for independent writing. It collects aggregate reading counters and turns them into one useful weekly observation.
+Trackinghaus alpha is a deliberately small analytics product for independent writing. It collects aggregate reading counters and turns them into one useful weekly observation.
 
 ## Privacy contract
 

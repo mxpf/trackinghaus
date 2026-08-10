@@ -20,7 +20,7 @@ test("public footer links back to Thinkinghaus and the source repository", async
   assert.match(app, /href="https:\/\/github\.com\/mxpf\/trackinghaus"/);
   assert.match(
     summary,
-    /No individual visitors are identified\. Trackinghaus stores only aggregate counters\./,
+    /No individual visitors are identified\. Trackinghaus alpha stores only aggregate counters\./,
   );
   assert.match(styles, /\.site-footer \.text-link\s*{[^}]*text-decoration:\s*none;/s);
   assert.doesNotMatch(styles, /color:\s*rgba\(/);
