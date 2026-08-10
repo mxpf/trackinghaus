@@ -20,13 +20,13 @@ The previous mobile capture and revised implementation were opened together in o
 - All resting copy uses Thinkinghaus ink `#1c1c1a`; muted gray evidence labels and metadata were removed. Opacity changes remain only for hover and disabled interaction states.
 - The content column begins at the same top edge as the Trackinghaus alpha wordmark. When the always-visible evidence makes the page taller than the viewport, the separate footer follows the content without overlap.
 - Mobile collapses to one column, keeps all seven days visible, and has no horizontal page overflow.
-- The footer mirrors Thinkinghaus: Thinkinghaus on the left column and Writing/GitHub on the right, with plain un-underlined links. The single privacy statement is merged into the evidence paragraph immediately above the footer.
+- The footer mirrors the Thinkinghaus structure: the configured host blog on the left column and Writing/GitHub on the right, with plain un-underlined links. The single privacy statement is merged into the evidence paragraph immediately above the footer.
 
 ## Functional review
 
 - “What changed” is present by default without a hide/show control.
 - The footer “Writing” control opens the writing list; there is no duplicate Writing link in the main area.
-- Footer links point to Thinkinghaus and the public Trackinghaus source repository.
+- Footer links point to the configured host blog and the deployment’s public source repository.
 - The public dashboard has no password, sign-in, or Settings view.
 - The Trackinghaus alpha wordmark and “This week” controls return to the weekly reading.
 - The chart has a screen-reader summary, focus states are visible, and browser logs contain no errors.

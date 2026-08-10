@@ -1,4 +1,4 @@
-import { allowedOrigin, siteKey, timeZone } from "../lib/config.js";
+import { allowedOrigins, siteKey, timeZone } from "../lib/config.js";
 import { ConfigurationError, recordRead } from "../lib/db.js";
 import { isoFromDate } from "../lib/dates.js";
 import { json, methodNotAllowed, parseBody } from "../lib/http.js";
@@ -10,7 +10,7 @@ function requestOrigin(request) {
 }
 
 function originAllowed(origin) {
-  if (origin === allowedOrigin()) return true;
+  if (allowedOrigins().includes(origin)) return true;
   return process.env.NODE_ENV !== "production" && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 }
 

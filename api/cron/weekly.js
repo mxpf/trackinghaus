@@ -1,4 +1,4 @@
-import { siteKey, timeZone } from "../../lib/config.js";
+import { siteConfigured, siteKey, timeZone } from "../../lib/config.js";
 import { databaseConfigured, getAggregateRows } from "../../lib/db.js";
 import { addDays, isoFromDate } from "../../lib/dates.js";
 import { emailConfigured, sendWeeklyEmail } from "../../lib/email.js";
@@ -11,12 +11,14 @@ function authorization(request) {
 
 export default async function handler(request, response) {
   if (request.method !== "GET") return methodNotAllowed(response, ["GET"]);
+  if (!emailConfigured()) {
+    return json(response, 200, { ok: true, skipped: "email_not_configured" });
+  }
   if (!process.env.CRON_SECRET || authorization(request) !== `Bearer ${process.env.CRON_SECRET}`) {
     return json(response, 401, { error: "unauthorized" });
   }
-  if (!databaseConfigured() || !emailConfigured()) {
-    return json(response, 503, { error: "weekly_email_not_configured" });
-  }
+  if (!siteConfigured()) return json(response, 503, { error: "site_not_configured" });
+  if (!databaseConfigured()) return json(response, 503, { error: "storage_not_configured" });
 
   try {
     const today = isoFromDate(new Date(), timeZone());
