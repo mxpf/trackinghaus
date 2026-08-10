@@ -31,3 +31,13 @@ test("public footer links back to the configured blog and source repository", as
   assert.doesNotMatch(app, /fillText\(item\.day/);
   assert.doesNotMatch(app, /"Today"/);
 });
+
+test("brand uses an accessible reduced-motion letter cascade", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const cascade = await readFile(new URL("../src/LetterCascade.jsx", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+  assert.match(app, /<LetterCascade text="Trackinghaus alpha"/);
+  assert.match(cascade, /aria-label=\{text\}/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+  assert.match(styles, /--letter-cascade-index/);
+});

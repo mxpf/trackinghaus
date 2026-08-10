@@ -31,6 +31,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - There is no public Settings view or link. “What changed” is always visible beneath the weekly chart; do not collapse it behind a show/hide control.
 - The main area has no Writing link; Writing appears only in the footer.
 - Match Thinkinghaus typography throughout at 18px/24px. Desktop uses Thinkinghaus’s 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
+- The visible product name uses the shared letter-cascade entrance also used by Thinkinghaus and the portfolio: letters rise 10px and resolve left-to-right at 40ms intervals with the existing typography unchanged. It runs once when the header appears and becomes static immediately for reduced-motion users.
 - Chart points use centered numeric dates only; do not restore weekday labels or a “Today” label. The evidence note describes the strongest source only, while the privacy promise appears once in the footer. Mobile evidence and footer spacing should remain compact.
 - The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column; Writing and the deployment’s GitHub repository sit in the right column. Footer links have no underlines.
 - Keep paragraph groups compact: one 24px line or at most two 24px lines of vertical space between related blocks.

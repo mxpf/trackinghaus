@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { loadWeekly } from "./api.js";
 import { demoWeekly } from "./demo-data.js";
+import { LetterCascade } from "./LetterCascade.jsx";
 
 function splitDetail(detail) {
   const boundary = detail.indexOf(". ");
@@ -218,7 +219,7 @@ export function App() {
     <div className="app-shell">
       <header className="brand">
         <button type="button" onClick={() => (ready ? show("week") : undefined)}>
-          Trackinghaus alpha
+          <LetterCascade text="Trackinghaus alpha" />
         </button>
       </header>
 
