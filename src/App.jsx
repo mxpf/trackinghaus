@@ -185,9 +185,22 @@ function SetupView({ code }) {
   );
 }
 
+function viewFromLocation() {
+  return new URLSearchParams(window.location.search).get("view") === "writing"
+    ? "writing"
+    : "week";
+}
+
+function locationForView(view) {
+  const url = new URL(window.location.href);
+  if (view === "writing") url.searchParams.set("view", "writing");
+  else url.searchParams.delete("view");
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
 export function App() {
   const demoMode = import.meta.env.DEV && import.meta.env.VITE_USE_LIVE_API !== "true";
-  const [view, setView] = useState("week");
+  const [view, setView] = useState(viewFromLocation);
   const [state, setState] = useState({
     status: demoMode ? "ready" : "loading",
     data: demoMode ? demoWeekly : null,
@@ -208,7 +221,19 @@ export function App() {
     if (!demoMode) refresh();
   }, [demoMode, refresh]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setView(viewFromLocation());
+      window.scrollTo({ top: 0, behavior: "auto" });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const show = (nextView) => {
+    if (nextView === view) return;
+    window.history.pushState({ trackinghausView: nextView }, "", locationForView(nextView));
     setView(nextView);
     window.scrollTo({ top: 0, behavior: "auto" });
   };
