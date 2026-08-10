@@ -1,6 +1,8 @@
 # Trackinghaus alpha
 
-Trackinghaus alpha is deliberately small, self-hosted analytics for independent writing. It collects aggregate reading counters and turns them into one useful weekly observation—without visitor profiles, cookies, or an analytics dashboard to manage.
+Trackinghaus alpha is deliberately small, self-hosted analytics for independent writing. You deploy your own copy, connect your own database, and keep control of the data. There is no Trackinghaus account, proprietary data silo, or subscription tying you to a hosted analytics service.
+
+It collects only aggregate reading counters and turns them into one useful weekly observation—without visitor profiles, cookies, or an analytics dashboard to manage. The code is MIT licensed and portable, so you can inspect it, change it, move it, or stop using it without strings attached.
 
 [Thinkinghaus](https://thinking.haus) uses Trackinghaus in practice: [view its public weekly stats](https://trackinghaus-alpha.vercel.app).
 
