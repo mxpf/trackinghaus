@@ -99,7 +99,7 @@ function TrendChart({ days }) {
   );
 }
 
-function WeeklyReading({ data }) {
+function WeeklyReading({ data, onOpenPieceReading }) {
   const [firstDetail, secondDetail] = splitDetail(data.insight.detail);
   return (
     <section aria-labelledby="week-title">
@@ -136,16 +136,23 @@ function WeeklyReading({ data }) {
           ))}
         </dl>
         {data.evidenceNote ? <p>{data.evidenceNote}</p> : null}
+        <p className="piece-reading-link">
+          See this week’s{" "}
+          <button className="text-link inline-link" type="button" onClick={onOpenPieceReading}>
+            reading by piece
+          </button>
+          , including how each changed from last week.
+        </p>
       </section>
     </section>
   );
 }
 
-function WritingView({ data, onBack }) {
+function ReadingByPieceView({ data, onBack }) {
   return (
-    <section className="secondary-view" aria-labelledby="writing-title">
+    <section className="secondary-view" aria-labelledby="piece-reading-title">
       <header className="period">
-        <h1 id="writing-title">All writing</h1>
+        <h1 id="piece-reading-title">Reading by piece</h1>
         <p>{data.range.label}</p>
       </header>
 
@@ -162,7 +169,7 @@ function WritingView({ data, onBack }) {
           ))}
         </ol>
       ) : (
-        <p className="empty-reading">The first writing list appears after a few visits.</p>
+        <p className="empty-reading">The first piece-by-piece reading appears after a few visits.</p>
       )}
 
       <button className="text-link" type="button" onClick={onBack}>
@@ -189,14 +196,13 @@ function SetupView({ code }) {
 }
 
 function viewFromLocation() {
-  return new URLSearchParams(window.location.search).get("view") === "writing"
-    ? "writing"
-    : "week";
+  const view = new URLSearchParams(window.location.search).get("view");
+  return view === "pieces" || view === "writing" ? "pieces" : "week";
 }
 
 function locationForView(view) {
   const url = new URL(window.location.href);
-  if (view === "writing") url.searchParams.set("view", "writing");
+  if (view === "pieces") url.searchParams.set("view", "pieces");
   else url.searchParams.delete("view");
   return `${url.pathname}${url.search}${url.hash}`;
 }
@@ -261,9 +267,10 @@ export function App() {
         ) : view === "week" ? (
           <WeeklyReading
             data={state.data}
+            onOpenPieceReading={() => show("pieces")}
           />
         ) : (
-          <WritingView data={state.data} onBack={() => show("week")} />
+          <ReadingByPieceView data={state.data} onBack={() => show("week")} />
         )}
       </main>
 
@@ -275,14 +282,6 @@ export function App() {
         ) : null}
         {ready ? (
           <nav className="footer-nav" aria-label="Primary">
-            <button
-              className="text-link"
-              type="button"
-              aria-current={view === "writing" ? "page" : undefined}
-              onClick={() => show("writing")}
-            >
-              Writing
-            </button>
             <a className="text-link" href={site.repository}>
               GitHub
             </a>

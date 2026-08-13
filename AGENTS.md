@@ -29,11 +29,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The dashboard is public so it can be shared alongside Thinkinghaus; only aggregate counters may appear there.
 - The closing evidence paragraph ends with: “No individual visitors are identified. Trackinghaus alpha stores only aggregate counters.” Do not duplicate that statement in the footer or restore the earlier “No profiles. No cookies.” wording.
 - There is no public Settings view or link. “What changed” is always visible beneath the weekly chart; do not collapse it behind a show/hide control.
-- The main area has no Writing link; Writing appears only in the footer.
+- The weekly reading closes with a separate plain-language paragraph linking inline to the “Reading by piece” view. Do not call this destination “Writing”; Trackinghaus measures reading but does not contain or publish the work.
 - Match the current portfolio and Thinkinghaus typography throughout at 16px/24px. Desktop uses the shared 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
 - The visible product name uses the shared letter-cascade entrance also used by Thinkinghaus and the portfolio: letters rise 5px and resolve left-to-right at 40ms intervals with the existing typography unchanged. It runs once when the header appears and becomes static immediately for reduced-motion users.
 - Chart points use centered numeric dates only; do not restore weekday labels or a “Today” label. The evidence note describes the strongest source only, while the privacy promise appears once in the footer. Mobile evidence and footer spacing should remain compact.
-- The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column; Writing and the deployment’s GitHub repository sit in the right column. Footer links have no underlines.
+- The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column and the deployment’s GitHub repository sits in the right column. Footer links have no underlines; contextual inline links in body copy are underlined.
 - Keep paragraph groups compact: one 24px line or at most two 24px lines of vertical space between related blocks.
 - Weekly language is deterministic for the alpha. Analytics chooses the signal; no LLM is required to operate the product.
 - Monday email delivery is optional, uses Resend, and has an idempotency key derived from the reporting week. A deployment without email configuration remains healthy and serves the public dashboard.

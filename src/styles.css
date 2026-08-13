@@ -202,6 +202,13 @@ h2 {
   text-decoration: none;
 }
 
+.inline-link {
+  display: inline;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .brand button,
 .text-link {
   transition: color 180ms ease;
@@ -236,6 +243,10 @@ h2 {
 
 .evidence > p {
   max-width: 590px;
+  margin-top: 24px;
+}
+
+.evidence > .piece-reading-link {
   margin-top: 24px;
 }
 
