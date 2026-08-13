@@ -8,6 +8,8 @@ It collects only aggregate reading counters and turns them into one useful weekl
 
 [Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmxpf%2Ftrackinghaus&env=TRACKINGHAUS_SITE_KEY%2CTRACKINGHAUS_SITE_NAME%2CTRACKINGHAUS_ALLOWED_ORIGINS%2CTRACKINGHAUS_TIME_ZONE&envDescription=Tell%20Trackinghaus%20which%20blog%20it%20should%20count.&envLink=https%3A%2F%2Fgithub.com%2Fmxpf%2Ftrackinghaus%23configuration&project-name=trackinghaus&repository-name=trackinghaus)
 
+![Trackinghaus weekly reading view](docs/preview.png)
+
 ## How self-hosting works
 
 Use the public repository as the shared product. Create one Vercel deployment for each blog and keep that blog’s database, email account, domain, and recipient in its private environment settings. You do not need to maintain a separate codebase for your own site.
