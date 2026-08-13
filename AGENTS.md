@@ -12,9 +12,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - The product name is **Trackinghaus alpha**.
 - The selected mock in `reference/trackinghaus-selected.png` is the visual source of truth.
-- Use the Thinkinghaus “super normal” language: warm off-white `#f7f6f2`, near-black `#1c1c1a`, generous empty space, quiet underlined links, and no cards, shadows, gradients, or decorative UI.
-- Typography is Untitled Sans first, with `Helvetica Neue`, Helvetica, and Arial as fallbacks. Default copy is 18px/24px at regular weight.
-- All resting copy uses the same Thinkinghaus ink color, `#1c1c1a`; do not mute evidence labels, values, writing metadata, or loading copy with gray or reduced opacity. Hover and disabled-state opacity may still communicate interaction state.
+- Use the shared permanently dark “super normal” language from the portfolio and Thinkinghaus: warm near-black `#1c1c1a`, warm off-white `#eeede9`, generous empty space, quiet text links, and no cards, shadows, gradients, or decorative UI.
+- Typography uses the real Untitled Sans web family. Default copy is Light at 16px/24px, ordinary labels and actions are Regular, and primary identity/headings use Medium.
+- All resting copy uses the same warm off-white ink color, `#eeede9`; do not mute evidence labels, values, writing metadata, or loading copy with reduced opacity. Hover may use the shared quiet gray `#8f8f93`, while disabled-state opacity may still communicate interaction state.
 - Desktop uses an asymmetric two-column composition with the product name at upper left, the weekly reading in the right column, and navigation/privacy language along the bottom edge.
 - The product is an anti-dashboard for independent writers: one useful weekly observation, evidence on demand, and no visitor profiles or cookies.
 
@@ -30,7 +30,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The closing evidence paragraph ends with: “No individual visitors are identified. Trackinghaus alpha stores only aggregate counters.” Do not duplicate that statement in the footer or restore the earlier “No profiles. No cookies.” wording.
 - There is no public Settings view or link. “What changed” is always visible beneath the weekly chart; do not collapse it behind a show/hide control.
 - The main area has no Writing link; Writing appears only in the footer.
-- Match Thinkinghaus typography throughout at 18px/24px. Desktop uses Thinkinghaus’s 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
+- Match the current portfolio and Thinkinghaus typography throughout at 16px/24px. Desktop uses the shared 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
 - The visible product name uses the shared letter-cascade entrance also used by Thinkinghaus and the portfolio: letters rise 5px and resolve left-to-right at 40ms intervals with the existing typography unchanged. It runs once when the header appears and becomes static immediately for reduced-motion users.
 - Chart points use centered numeric dates only; do not restore weekday labels or a “Today” label. The evidence note describes the strongest source only, while the privacy promise appears once in the footer. Mobile evidence and footer spacing should remain compact.
 - The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column; Writing and the deployment’s GitHub repository sit in the right column. Footer links have no underlines.

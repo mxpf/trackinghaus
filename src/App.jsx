@@ -31,6 +31,9 @@ function TrendChart({ days }) {
       context.scale(ratio, ratio);
       context.clearRect(0, 0, bounds.width, bounds.height);
 
+      const styles = getComputedStyle(document.documentElement);
+      const ink = styles.getPropertyValue("--ink").trim() || "#eeede9";
+
       const labelInset = 24;
       const left = labelInset;
       const right = bounds.width - labelInset;
@@ -49,8 +52,8 @@ function TrendChart({ days }) {
               ((item.value - minimum) / spread) * (pointBottom - pointTop),
       }));
 
-      context.strokeStyle = "#1c1c1a";
-      context.lineWidth = 1.5;
+      context.strokeStyle = ink;
+      context.lineWidth = 1;
       context.lineJoin = "round";
       context.lineCap = "round";
       context.beginPath();
@@ -60,15 +63,15 @@ function TrendChart({ days }) {
       });
       context.stroke();
 
-      context.fillStyle = "#1c1c1a";
+      context.fillStyle = ink;
       points.forEach((point) => {
         context.beginPath();
-        context.arc(point.x, point.y, 3.6, 0, Math.PI * 2);
+        context.arc(point.x, point.y, 3, 0, Math.PI * 2);
         context.fill();
       });
 
       const family = '"Untitled Sans", "Helvetica Neue", Helvetica, Arial, sans-serif';
-      context.font = `400 18px ${family}`;
+      context.font = `400 16px ${family}`;
       context.textBaseline = "top";
 
       days.forEach((item, index) => {

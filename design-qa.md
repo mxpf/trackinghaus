@@ -1,53 +1,59 @@
-# Trackinghaus alpha design QA
+# Trackinghaus design QA
 
-## Inputs
+**Source visual truth**
 
-- Selected reference: `reference/trackinghaus-selected.png` (1487 × 1058)
-- User-provided previous mobile evidence/footer capture: `/tmp/codex-remote-attachments/019fe42d-8c69-7333-be67-2634eb879b1f/a0cfa0b8-6356-4866-b1e7-4bbeaacec853/1-Photo-1.jpg` (655 × 1280)
-- Final weekly view inspected live at 1280 × 720, including a full-page capture.
-- Mobile spacing/footer capture: `qa/implementation-mobile-current.png` (375 × 1302 at 1× density); captured immediately before the final deletion-only removal of the “Today” label.
-- Side-by-side comparison: `qa/reference-vs-alpha.jpg`
+- `reference/trackinghaus-selected.png` — 1488 × 1044 px, original Trackinghaus composition and content hierarchy, 1× density.
+- `/tmp/thinkinghaus-reference.png` — 1280 × 720 px, desktop reference, 1× density.
+- `/tmp/portfolio-reference.png` — 862 × 939 px, supporting reference for the shared portfolio typography and palette, 1× density.
 
-The previous mobile capture and revised implementation were opened together in one comparison input. The mobile evidence/footer region was also reviewed as the focused comparison because that is where the user identified excessive spacing and repeated copy.
+**Implementation evidence**
 
-## Visual review
+- `/tmp/trackinghaus-final-top.jpg` — 1280 × 720 px, 1280 × 720 CSS viewport, 1× density, home view at the top of the page.
+- `/tmp/trackinghaus-mobile-after.jpg` — 390 × 1223 px full-page capture, 390 × 844 CSS viewport, 1× density, home view.
 
-- The warm off-white background and near-black ink match the selected Thinkinghaus direction.
-- Desktop column start, maximum content width, outer padding, and bottom anchoring align with the source.
-- Header, insight copy, chart, evidence, and separate footer follow the source hierarchy with a tighter one-to-two-line vertical rhythm.
-- The chart preserves the seven-point shape. Numeric dates are centered directly beneath each point; weekday and “Today” labels are removed.
-- All interface text inherits Thinkinghaus’s 18px / 24px typography, and chart dates use compact month/day labels such as “8/3.”
-- All resting copy uses Thinkinghaus ink `#1c1c1a`; muted gray evidence labels and metadata were removed. Opacity changes remain only for hover and disabled interaction states.
-- The content column begins at the same top edge as the Trackinghaus alpha wordmark. When the always-visible evidence makes the page taller than the viewport, the separate footer follows the content without overlap.
-- Mobile collapses to one column, keeps all seven days visible, and has no horizontal page overflow.
-- The footer mirrors the Thinkinghaus structure: the configured host blog on the left column and Writing/GitHub on the right, with plain un-underlined links. The single privacy statement is merged into the evidence paragraph immediately above the footer.
+**Full-view comparison evidence**
 
-## Functional review
+The desktop implementation was opened together with both the original Trackinghaus composition and the 1280 × 720 Thinkinghaus reference. Trackinghaus preserves the selected mock's asymmetric information hierarchy while adopting the sibling site's warm dark ground, off-white ink, 24 px outer margin, Untitled Sans family, 16/24 typographic base, restrained two-column composition, and quiet footer treatment. The chart and evidence rows remain specific to Trackinghaus and preserve the product's analytical purpose.
 
-- “What changed” is present by default without a hide/show control.
-- The footer “Writing” control opens the writing list; there is no duplicate Writing link in the main area.
-- Footer links point to the configured host blog and the deployment’s public source repository.
-- The public dashboard has no password, sign-in, or Settings view.
-- The Trackinghaus alpha wordmark and “This week” controls return to the weekly reading.
-- The chart has a screen-reader summary, focus states are visible, and browser logs contain no errors.
-- The production build and all 10 automated tests pass; the browser console has no warnings or errors.
+**Focused-region comparison evidence**
 
-## Comparison history
+A separate crop was not required: the relevant typography, spacing, chart treatment, rules, and footer were legible in the 1× full-view captures. Computed styles were also checked in the browser: body copy is 16 px at weight 300, identity and headings use weight 500, and the page uses the shared `#1c1c1a` / `#eeede9` palette.
 
-- P2 found: mobile evidence rows, explanatory copy, Writing, and privacy text were separated by oversized gaps, while the evidence note repeated the footer’s privacy claim.
-- Fix: reduced related-block spacing to 24–48px, shortened the evidence note to the source observation only, and rebuilt the footer as a distinct two-column section.
-- P2 found: the separate privacy paragraph still made the footer unlike Thinkinghaus, and the footer links retained underlines.
-- Fix: merged privacy into the preceding evidence note, removed the footer paragraph, and removed underline decoration from all footer links.
-- P2 found: evidence labels and writing metadata used a muted gray that did not exist in Thinkinghaus’s single-color type system.
-- Fix: removed static color and opacity overrides so every resting text element inherits `#1c1c1a`.
-- P2 found: weekday plus numeric date labels created a crowded chart grid and forced edge-aligned labels.
-- Fix: removed weekdays and the redundant “Today” marker, inset the plot by 24px, and centered each numeric date under its point.
-- Post-fix evidence: `qa/implementation-mobile-current.png` shows compact evidence rows, one privacy statement, a distinct footer, and centered numeric dates without overflow. A subsequent 1280 × 720 live capture verifies the same chart with the “Today” label removed and no horizontal overflow.
+**Findings**
 
-## Open findings
+- No actionable P0, P1, or P2 mismatches remain.
+- Typography: real Untitled Sans Light, Regular, and Medium files load locally. The 16 px base, 24 px line height, zero tracking, and restrained weight hierarchy match the sibling sites.
+- Spacing and layout: desktop retains the sparse two-column structure and 24 px frame. Mobile collapses cleanly to one column with no horizontal overflow.
+- Colors and tokens: warm dark ground, off-white ink, muted gray links, and low-contrast rules match the shared site system.
+- Image quality: no raster image assets are used in this interface. The chart remains a native data visualization and renders sharply.
+- Copy and content: existing Trackinghaus copy and analytics data were preserved.
+- Accessibility and interaction: the Writing control opens the all-writing view, browser back restores the weekly view, reduced-motion behavior remains covered by tests, and no browser console errors were found.
+- Page ending: the mobile footer ends with a 24 px bottom margin and does not create horizontal or excess post-footer overflow.
 
-- P0: none
-- P1: none
-- P2: none
+**Comparison history**
+
+- Earlier state: light background, near-black text, 18 px base typography, and a fallback font made Trackinghaus visibly diverge from the portfolio and Thinkinghaus.
+- Fixes made: installed the same Untitled Sans Light/Regular/Medium webfonts, moved the interface to the shared dark palette, normalized the base to 16/24, aligned weights and 24 px spacing, softened rules and links, and updated the chart to inherit the shared ink token.
+- Post-fix evidence: `/tmp/trackinghaus-final-top.jpg` and `/tmp/trackinghaus-mobile-after.jpg`; desktop and mobile comparisons show the shared visual language without compromising the analytics hierarchy.
+
+**Primary interactions tested**
+
+- Home → Writing → browser back to Home.
+- Desktop 1280 × 720 and mobile 390 × 844 responsive states.
+- Browser console errors checked: none.
+- Automated tests: 19 passed.
+- Production build: passed.
+
+**Implementation checklist**
+
+- [x] Shared palette and type family.
+- [x] 16 px base typography and intentional weight hierarchy.
+- [x] Desktop and mobile responsive verification.
+- [x] Core navigation verification.
+- [x] Console, automated test, and production build verification.
+
+**Follow-up polish**
+
+- No P3 refinements are required for this pass.
 
 final result: passed
