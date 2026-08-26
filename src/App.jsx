@@ -138,9 +138,9 @@ function WeeklyReading({ data, onOpenPieceReading }) {
         {data.evidenceNote ? <p>{data.evidenceNote}</p> : null}
         <p className="piece-reading-link">
           See this week’s{" "}
-          <button className="text-link inline-link" type="button" onClick={onOpenPieceReading}>
+          <a className="inline-link" href={locationForView("pieces")}>
             reading by piece
-          </button>
+          </a>
           , including how each changed from last week.
         </p>
       </section>
@@ -148,9 +148,9 @@ function WeeklyReading({ data, onOpenPieceReading }) {
   );
 }
 
-function ReadingByPieceView({ data, onBack }) {
+function ReadingByPieceView({ data }) {
   return (
-    <section className="secondary-view" aria-labelledby="piece-reading-title">
+    <section className="secondary-view article-body" aria-labelledby="piece-reading-title">
       <header className="period">
         <h1 id="piece-reading-title">Reading by piece</h1>
         <p>{data.range.label}</p>
@@ -169,12 +169,12 @@ function ReadingByPieceView({ data, onBack }) {
           ))}
         </ol>
       ) : (
-        <p className="empty-reading">The first piece-by-piece reading appears after a few visits.</p>
+        <p className="empty-reading">The first reading by piece appears after a few reads.</p>
       )}
 
-      <button className="text-link" type="button" onClick={onBack}>
+      <a className="text-link" href={locationForView("week")}>
         This week
-      </button>
+      </a>
     </section>
   );
 }
@@ -209,7 +209,7 @@ function locationForView(view) {
 
 export function App() {
   const demoMode = import.meta.env.DEV && import.meta.env.VITE_USE_LIVE_API !== "true";
-  const [view, setView] = useState(viewFromLocation);
+  const view = viewFromLocation();
   const [state, setState] = useState({
     status: demoMode ? "ready" : "loading",
     data: demoMode ? demoWeekly : null,
@@ -230,36 +230,24 @@ export function App() {
     if (!demoMode) refresh();
   }, [demoMode, refresh]);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      setView(viewFromLocation());
-      window.scrollTo({ top: 0, behavior: "auto" });
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
-
-  const show = (nextView) => {
-    if (nextView === view) return;
-    window.history.pushState({ trackinghausView: nextView }, "", locationForView(nextView));
-    setView(nextView);
-    window.scrollTo({ top: 0, behavior: "auto" });
-  };
-
   const ready = state.status === "ready";
   const site = ready ? state.data.site : null;
+  const isArticlePage = ready && view === "pieces";
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${isArticlePage ? "is-article-page" : "is-index-page"}`}>
       <header className="brand">
-        <button type="button" onClick={() => (ready ? show("week") : undefined)}>
+        <a href={ready ? locationForView("week") : undefined}>
           <LetterCascade text="Trackinghaus alpha" />
-        </button>
+        </a>
       </header>
 
-      <main className="content" aria-live="polite" aria-busy={state.status === "loading"}>
+      <main
+        className={`content ${isArticlePage ? "article-column" : "index-column"}`}
+        aria-live="polite"
+        aria-busy={state.status === "loading"}
+      >
         {state.status === "loading" ? (
-          <p className="loading-copy">Opening Trackinghaus alpha…</p>
+          <p className="loading-copy">Loading this week’s reading…</p>
         ) : state.status === "setup" ? (
           <SetupView code={state.code} />
         ) : state.status === "error" ? (
@@ -267,27 +255,64 @@ export function App() {
         ) : view === "week" ? (
           <WeeklyReading
             data={state.data}
-            onOpenPieceReading={() => show("pieces")}
           />
         ) : (
-          <ReadingByPieceView data={state.data} onBack={() => show("week")} />
+          <ReadingByPieceView data={state.data} />
         )}
       </main>
 
-      <footer className="site-footer">
-        {site?.origin ? (
-          <a className="footer-brand text-link" href={site.origin}>
-            {site.name}
-          </a>
-        ) : null}
-        {ready ? (
-          <nav className="footer-nav" aria-label="Primary">
-            <a className="text-link" href={site.repository}>
-              GitHub
-            </a>
-          </nav>
-        ) : null}
-      </footer>
+      <SiteFooter site={site} ready={ready} revealAtEnd={isArticlePage} />
     </div>
+  );
+}
+
+function SiteFooter({ site, ready, revealAtEnd }) {
+  const [revealIsArmed, setRevealIsArmed] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  useEffect(() => {
+    if (!revealAtEnd) return undefined;
+
+    const revealAtScrollEnd = () => {
+      const distanceToEnd = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      if (distanceToEnd <= 1) setIsRevealed(true);
+    };
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      setRevealIsArmed(true);
+      revealAtScrollEnd();
+    });
+    window.addEventListener("scroll", revealAtScrollEnd, { passive: true });
+    window.addEventListener("resize", revealAtScrollEnd);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", revealAtScrollEnd);
+      window.removeEventListener("resize", revealAtScrollEnd);
+    };
+  }, [revealAtEnd]);
+
+  const className = [
+    "site-footer",
+    revealAtEnd && "site-footer--end-reveal",
+    revealIsArmed && "is-armed",
+    isRevealed && "is-revealed",
+  ].filter(Boolean).join(" ");
+
+  return (
+    <footer className={className}>
+      {site?.origin ? (
+        <a className="footer-brand text-link" href={site.origin}>
+          {site.name}
+        </a>
+      ) : null}
+      {ready ? (
+        <nav className="footer-nav" aria-label="Primary">
+          <a className="text-link" href={site.repository}>
+            GitHub
+          </a>
+        </nav>
+      ) : null}
+    </footer>
   );
 }

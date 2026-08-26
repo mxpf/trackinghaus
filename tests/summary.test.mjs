@@ -41,6 +41,7 @@ test("builds a seven-day reading and compares it with the previous week", () => 
   assert.equal(summary.insight.returning, 3);
   assert.equal(summary.writing[0].change, 10);
   assert.equal(summary.insight.headline, "Search brought an essay back into view.");
+  assert.equal(summary.insight.detail, "Quiet Software received 13 reads. 9 reads came through search.");
   assert.equal(summary.days.at(-1).today, true);
   assert.equal(summary.days[0].date, "8/3");
   assert.equal(summary.days.at(-1).date, "8/9");
@@ -54,7 +55,8 @@ test("returns a quiet first-run reading when there is no data", () => {
   const summary = buildWeeklySummary([], { endDate: "2026-08-09" });
   assert.equal(summary.insight.total, 0);
   assert.equal(summary.writing.length, 0);
-  assert.equal(summary.insight.headline, "Not enough happened yet.");
+  assert.equal(summary.insight.headline, "The week is just getting started.");
+  assert.equal(summary.insight.detail, "The first weekly reading appears after a few reads.");
   assert.equal(
     summary.evidenceNote,
     "No individual visitors are identified. Trackinghaus alpha stores only aggregate counters.",

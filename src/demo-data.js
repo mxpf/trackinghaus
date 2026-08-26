@@ -1,8 +1,8 @@
 export const demoWeekly = {
   range: { start: "2026-08-03", end: "2026-08-09", label: "August 3–9, 2026" },
   insight: {
-    headline: "An old essay found new readers.",
-    detail: "Notes on Quiet Software was read by 78 people. 34 arrived through search.",
+    headline: "Search brought an essay back into view.",
+    detail: "Notes on Quiet Software received 78 reads. 34 reads came through search.",
     primaryTitle: "Notes on Quiet Software",
     total: 78,
     search: 34,
