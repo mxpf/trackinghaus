@@ -28,6 +28,14 @@ test("builds a seven-day reading and compares it with the previous week", () => 
       reads: 4,
       returning_reads: 1,
     },
+    {
+      day: "2026-07-01",
+      path: "/quiet-software",
+      title: "Quiet Software",
+      source: "search",
+      reads: 1000,
+      returning_reads: 1000,
+    },
   ];
 
   const summary = buildWeeklySummary(rows, {

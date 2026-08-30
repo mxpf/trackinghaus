@@ -26,9 +26,9 @@
   --blog-background: #211f1a;
   --blog-foreground: #f1ede3;
   --blog-muted: #9a9285;
+  --article-copy: #ada59b;
   --ink: var(--blog-foreground);
   --ground: var(--blog-background);
-  --link: var(--blog-muted);
   --rule: color-mix(in srgb, var(--ink) 22%, transparent);
   color: var(--ink);
   background: var(--ground);
@@ -116,13 +116,6 @@ button:disabled {
   color: inherit;
   font-weight: 400;
   text-decoration: none;
-}
-
-@keyframes letter-cascade-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .letter-cascade {
@@ -229,7 +222,7 @@ h2 {
 .inline-link,
 .article-body a {
   display: inline;
-  color: #ada59b;
+  color: var(--article-copy);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
@@ -254,12 +247,13 @@ h2 {
 }
 
 .evidence dt,
-.writing-list li span:first-child {
+.writing-title {
   font-weight: 400;
 }
 
 .evidence dt,
-.writing-list li span:not(:first-child) {
+.writing-reads,
+.writing-change {
   color: var(--blog-muted);
 }
 
@@ -283,26 +277,39 @@ h2 {
 }
 
 .writing-list {
-  margin-top: 73px;
+  margin-top: 12px;
   margin-bottom: 62px;
   padding: 0;
   list-style: none;
 }
 
+.writing-list-headings,
 .writing-list li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 44px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(112px, auto);
   gap: 24px;
+}
+
+.writing-list-headings {
+  margin-top: 73px;
+  color: var(--blog-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.writing-current-heading,
+.writing-change-heading,
+.writing-change {
+  text-align: right;
+}
+
+.writing-list li {
   padding: 12px 0;
   border-bottom: 1px solid var(--rule);
 }
 
 .writing-list li:first-child {
   border-top: 1px solid var(--rule);
-}
-
-.writing-list li span:nth-child(3) {
-  text-align: right;
 }
 
 .access-view {
@@ -332,11 +339,21 @@ h2 {
 }
 
 .article-body {
-  color: #ada59b;
+  color: var(--article-copy);
 }
 
 .article-body h1 {
   color: var(--blog-foreground);
+}
+
+.is-article-page .site-footer.site-footer--end-reveal.is-armed {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.is-article-page .site-footer.site-footer--end-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
 }
 
 .inline-link:hover,
@@ -377,32 +394,14 @@ h2 {
 
   .content {
     width: 100%;
-    padding: 0;
   }
 
   .article-column {
     width: 100%;
   }
 
-  .insight {
-    margin-top: 48px;
-  }
-
-  .insight p {
-    margin-top: 24px;
-  }
-
   .nowrap {
     white-space: normal;
-  }
-
-  .trend {
-    margin-top: 36px;
-  }
-
-  .trend-canvas {
-    width: 100%;
-    height: 178px;
   }
 
   .evidence {
@@ -424,12 +423,21 @@ h2 {
     gap: 8px 16px;
   }
 
-  .writing-list li span:nth-child(3) {
+  .writing-list-headings {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 16px;
+  }
+
+  .writing-current-heading {
+    display: none;
+  }
+
+  .writing-change-heading,
+  .writing-change {
     grid-column: 2;
   }
 
   .site-footer {
-    display: grid;
     grid-template-columns: 1fr;
     row-gap: 24px;
     margin-top: 48px;
@@ -460,7 +468,6 @@ h2 {
 
   .is-index-page .brand,
   .is-index-page .site-footer,
-  .is-index-page .post-list li,
   .is-index-page .period h1,
   .is-index-page .period p,
   .is-index-page .insight h2,
@@ -498,24 +505,15 @@ h2 {
     animation-delay: 140ms;
   }
 
-  .is-index-page .post-list li:nth-child(1) { animation-delay: 20ms; }
-  .is-index-page .post-list li:nth-child(2) { animation-delay: 40ms; }
-  .is-index-page .post-list li:nth-child(3) { animation-delay: 60ms; }
-  .is-index-page .post-list li:nth-child(4) { animation-delay: 80ms; }
-  .is-index-page .post-list li:nth-child(5) { animation-delay: 100ms; }
-  .is-index-page .post-list li:nth-child(6) { animation-delay: 120ms; }
-  .is-index-page .post-list li:nth-child(7) { animation-delay: 140ms; }
-  .is-index-page .post-list li:nth-child(8) { animation-delay: 160ms; }
-  .is-index-page .post-list li:nth-child(9) { animation-delay: 180ms; }
-  .is-index-page .post-list li:nth-child(n + 10) { animation-delay: 200ms; }
-
-  .is-article-page .site-footer.site-footer--end-reveal.is-armed {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
   .is-article-page .site-footer.site-footer--end-reveal.is-revealed {
     animation: article-footer-reveal 220ms ease-out both;
+  }
+}
+
+@keyframes letter-cascade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

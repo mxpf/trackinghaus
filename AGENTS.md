@@ -44,3 +44,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The Trackinghaus footer follows the same 38/62 column split as the main frame. Ordinary links use Thinkinghaus behavior: inherited foreground color, no underline, and 160ms opacity reduction on hover or focus; contextual body links, including article-body and inline evidence links, begin at the body-copy color (`#ada59b`) and brighten to the full foreground color.
 - Homepage elements build in reading order with 20ms stagger increments: the brand starts at 0ms, then the weekly reading elements follow, with the footer last. The article-style footer-end reveal remains independent of this index entrance sequence.
 - Homepage reporting language describes aggregate reads and source categories, never people, individual readers, or identifiable returnees.
+- Reading by piece labels its signed third column “Change from last week”; do not leave those comparison values unexplained.

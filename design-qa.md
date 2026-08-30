@@ -43,7 +43,7 @@ A separate crop was not required: the relevant typography, spacing, chart treatm
 - Home → inline “reading by piece” link → “Reading by piece” view → browser back to Home.
 - Desktop 1280 × 720 and mobile 390 × 844 responsive states.
 - Browser console errors checked: none.
-- Automated tests: 19 passed.
+- Automated suite: passed.
 - Production build: passed.
 
 **Implementation checklist**

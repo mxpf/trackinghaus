@@ -11,24 +11,7 @@ import {
   timeZone,
 } from "../lib/config.js";
 import { emailConfigured } from "../lib/email.js";
-
-async function withEnvironment(changes, callback) {
-  const previous = new Map(
-    Object.keys(changes).map((key) => [key, process.env[key]]),
-  );
-  for (const [key, value] of Object.entries(changes)) {
-    if (value === undefined) delete process.env[key];
-    else process.env[key] = value;
-  }
-  try {
-    await callback();
-  } finally {
-    for (const [key, value] of previous) {
-      if (value === undefined) delete process.env[key];
-      else process.env[key] = value;
-    }
-  }
-}
+import { withEnvironment } from "./helpers.mjs";
 
 test("site configuration is neutral until a host origin is supplied", async () => {
   await withEnvironment(

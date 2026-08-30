@@ -3,46 +3,7 @@ import test from "node:test";
 import collect from "../api/collect.js";
 import weeklyCron from "../api/cron/weekly.js";
 import weekly from "../api/weekly.js";
-
-async function withEnvironment(changes, callback) {
-  const previous = new Map(
-    Object.keys(changes).map((key) => [key, process.env[key]]),
-  );
-  for (const [key, value] of Object.entries(changes)) {
-    if (value === undefined) delete process.env[key];
-    else process.env[key] = value;
-  }
-  try {
-    await callback();
-  } finally {
-    for (const [key, value] of previous) {
-      if (value === undefined) delete process.env[key];
-      else process.env[key] = value;
-    }
-  }
-}
-
-function responseMock() {
-  return {
-    headers: {},
-    statusCode: 200,
-    body: null,
-    setHeader(name, value) {
-      this.headers[name] = value;
-    },
-    status(code) {
-      this.statusCode = code;
-      return this;
-    },
-    json(body) {
-      this.body = body;
-      return this;
-    },
-    end() {
-      return this;
-    },
-  };
-}
+import { responseMock, withEnvironment } from "./helpers.mjs";
 
 test("collector rejects events from an unapproved origin before storage", async () => {
   const response = responseMock();
@@ -62,6 +23,28 @@ test("collector rejects events from an unapproved origin before storage", async 
   );
   assert.equal(response.statusCode, 403);
   assert.equal(response.body.error, "origin_not_allowed");
+});
+
+test("collector treats malformed JSON as an invalid event", async () => {
+  await withEnvironment(
+    {
+      TRACKINGHAUS_ALLOWED_ORIGINS: "https://example.test",
+      TRACKINGHAUS_ALLOWED_ORIGIN: undefined,
+    },
+    async () => {
+      const response = responseMock();
+      await collect(
+        {
+          method: "POST",
+          headers: { origin: "https://example.test" },
+          body: "{not-json",
+        },
+        response,
+      );
+      assert.equal(response.statusCode, 400);
+      assert.equal(response.body.error, "invalid_event");
+    },
+  );
 });
 
 test("weekly endpoint is public and reports missing storage directly", async () => {

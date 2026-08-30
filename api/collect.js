@@ -3,7 +3,7 @@ import { ConfigurationError, recordRead } from "../lib/db.js";
 import { isoFromDate } from "../lib/dates.js";
 import { json, methodNotAllowed, parseBody } from "../lib/http.js";
 
-const sources = new Set(["direct", "search", "social", "referral"]);
+const ALLOWED_SOURCES = new Set(["direct", "search", "social", "referral"]);
 
 function requestOrigin(request) {
   return request.headers?.origin || request.headers?.Origin || "";
@@ -14,8 +14,8 @@ function originAllowed(origin) {
   return process.env.NODE_ENV !== "production" && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 }
 
-function setCors(response, origin) {
-  if (originAllowed(origin)) response.setHeader("Access-Control-Allow-Origin", origin);
+function setCors(response, origin, allowed) {
+  if (allowed) response.setHeader("Access-Control-Allow-Origin", origin);
   response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Access-Control-Max-Age", "86400");
@@ -36,11 +36,12 @@ function cleanTitle(value, path) {
 
 export default async function handler(request, response) {
   const origin = requestOrigin(request);
-  setCors(response, origin);
+  const allowed = originAllowed(origin);
+  setCors(response, origin, allowed);
 
   if (request.method === "OPTIONS") return response.status(204).end();
   if (request.method !== "POST") return methodNotAllowed(response, ["POST", "OPTIONS"]);
-  if (!originAllowed(origin)) return json(response, 403, { error: "origin_not_allowed" });
+  if (!allowed) return json(response, 403, { error: "origin_not_allowed" });
 
   const contentLength = Number(request.headers?.["content-length"] || 0);
   if (contentLength > 4096) return json(response, 413, { error: "payload_too_large" });
@@ -48,7 +49,7 @@ export default async function handler(request, response) {
   try {
     const body = parseBody(request);
     const path = cleanPath(body.path);
-    if (body.site !== siteKey() || !path || !sources.has(body.source)) {
+    if (body.site !== siteKey() || !path || !ALLOWED_SOURCES.has(body.source)) {
       return json(response, 400, { error: "invalid_event" });
     }
 

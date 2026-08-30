@@ -8,7 +8,7 @@
 - Deterministic seven-day insight generation with previous-week comparison.
 - Public aggregate-only dashboard designed to be shared alongside its host blog.
 - Monday Vercel Cron endpoint and idempotent Resend delivery.
-- Live-data weekly, always-visible evidence, writing, and setup states.
+- Live-data weekly, always-visible evidence, Reading by piece, and setup states.
 - Site-neutral self-hosting configuration with support for multiple allowed origins.
 - A reusable Vercel setup path with optional weekly email.
 

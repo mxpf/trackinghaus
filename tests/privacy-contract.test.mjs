@@ -13,13 +13,14 @@ test("tracker sends aggregate context without visitor identifiers", async () => 
 });
 
 test("public footer links back to the configured blog and source repository", async () => {
-  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const footer = await readFile(new URL("../src/SiteFooter.jsx", import.meta.url), "utf8");
+  const weeklyReading = await readFile(new URL("../src/WeeklyReading.jsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
   const summary = await readFile(new URL("../lib/summary.js", import.meta.url), "utf8");
-  assert.match(app, /href=\{site\.origin\}/);
-  assert.match(app, /\{site\.name\}/);
-  assert.match(app, /href=\{site\.repository\}/);
-  assert.doesNotMatch(app, /thinking\.haus/);
+  assert.match(footer, /href=\{site\.origin\}/);
+  assert.match(footer, /\{site\.name\}/);
+  assert.match(footer, /href=\{site\.repository\}/);
+  assert.doesNotMatch(footer, /thinking\.haus/);
   assert.match(
     summary,
     /No individual visitors are identified\. Trackinghaus alpha stores only aggregate counters\./,
@@ -27,9 +28,9 @@ test("public footer links back to the configured blog and source repository", as
   assert.match(styles, /\.site-footer \.text-link\s*{[^}]*text-decoration:\s*none;/s);
   assert.doesNotMatch(styles, /color:\s*rgba\(/);
   assert.doesNotMatch(styles, /\.loading-copy\s*{[^}]*opacity:/s);
-  assert.doesNotMatch(app, /className="privacy"/);
-  assert.doesNotMatch(app, /fillText\(item\.day/);
-  assert.doesNotMatch(app, /"Today"/);
+  assert.doesNotMatch(weeklyReading, /className="privacy"/);
+  assert.doesNotMatch(weeklyReading, /fillText\(item\.day/);
+  assert.doesNotMatch(weeklyReading, /"Today"/);
 });
 
 test("brand uses an accessible reduced-motion letter cascade", async () => {
