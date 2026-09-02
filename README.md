@@ -2,7 +2,7 @@
 
 Trackinghaus alpha counts reads without keeping readers.
 
-It is a small, self-hosted analytics tool for one independent publication. A script notices that a page was read. Before anything leaves the browser, the referrer has become a broad source category and the URL has lost its query string and fragment. The server folds what remains directly into daily counters. It does not create a raw event log.
+It is a small, self-hosted analytics tool for one independent publication. A [small script](./public/tracker.js) notices that a page was read. Before anything leaves the browser, the referrer has become a broad source category and the URL has lost its query string and fragment. The server folds what remains directly into daily counters. It does not create a raw event log.
 
 The result is a weekly reading rather than a dashboard to operate: one observation, the evidence beneath it, and a comparison with the previous week. The language is deterministic. Trackinghaus does not need an LLM to understand the numbers.
 
@@ -14,7 +14,7 @@ The result is a weekly reading rather than a dashboard to operate: one observati
 
 ## What it knows
 
-Each accepted read adds one to an aggregate counter. Trackinghaus keeps only:
+Each accepted read adds one to an [aggregate counter](./db/schema.sql). Trackinghaus keeps only:
 
 - the publication key
 - the calendar day
@@ -25,7 +25,7 @@ Each accepted read adds one to an aggregate counter. Trackinghaus keeps only:
 
 That is enough to see that search brought an older piece back into view, or that a page found a little momentum. It is not enough to reconstruct an individual reading history.
 
-The tracker does not send a user agent, cookie, visitor ID, raw referrer, query string, or URL fragment. Trackinghaus does not store IP addresses or visitor profiles. It respects Global Privacy Control and Do Not Track.
+The tracker does not send a user agent, cookie, visitor ID, raw referrer, query string, or URL fragment. Trackinghaus does not store IP addresses or visitor profiles. It respects [Global Privacy Control](https://globalprivacycontrol.org/) and [Do Not Track](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/DNT).
 
 The browser keeps two small facts to itself. Session storage prevents the same page from being counted twice in one day. Local storage remembers only whether this browser has visited before. Neither local key is sent to the server.
 
@@ -33,7 +33,7 @@ The public dashboard therefore contains only aggregate counters. No individual v
 
 ## How the week appears
 
-The public view reads the current seven-day window and compares it with the seven days before it. The summary code chooses the strongest useful signal. “Reading by piece” shows the same comparison page by page.
+The public view reads the current seven-day window and compares it with the seven days before it. The [summary code](./lib/summary.js) chooses the strongest useful signal. “Reading by piece” shows the same comparison page by page.
 
 There are no accounts, real-time activity feeds, audience profiles, or controls waiting to be managed. Monday email is optional. Without email configuration, the public reading continues to work.
 
@@ -54,7 +54,7 @@ The site key is a stable identifier. The site name appears in the footer. The fi
 
 ### Connect the database
 
-Add Neon Postgres from the Vercel Marketplace. The integration supplies `DATABASE_URL`. Trackinghaus creates its aggregate table on the first read, so there is no separate migration step.
+Add [Neon Postgres](https://vercel.com/marketplace/neon) from the Vercel Marketplace. The integration supplies `DATABASE_URL`. Trackinghaus creates its aggregate table on the first read, so there is no separate migration step.
 
 After setting the environment values, redeploy and visit:
 
@@ -80,7 +80,7 @@ Place the script once in the publication’s shared layout, immediately before `
 
 ### Send the Monday reading
 
-This part is optional. Add Resend from the Vercel Marketplace, verify a sending domain, and set:
+This part is optional. Add [Resend](https://vercel.com/marketplace/resend) from the Vercel Marketplace, verify a sending domain, and set:
 
 ```text
 TRACKINGHAUS_TO_EMAIL=you@example.com
@@ -88,7 +88,7 @@ TRACKINGHAUS_FROM_EMAIL=Trackinghaus alpha <stats@example.com>
 CRON_SECRET=a-long-random-value
 ```
 
-Resend supplies `RESEND_API_KEY`. When all four email values are present, Vercel Cron sends the previous week’s reading each Monday. The reporting week is also used as the idempotency key, so retrying the job does not intentionally send the same reading twice.
+Resend supplies `RESEND_API_KEY`. When all four email values are present, [Vercel Cron](https://vercel.com/docs/cron-jobs) sends the previous week’s reading each Monday. The reporting week is also used as the idempotency key, so retrying the job does not intentionally send the same reading twice.
 
 ## Configuration
 
@@ -128,7 +128,7 @@ npm run dev
 npm test
 ```
 
-The local view uses representative demo data. `npm test` builds the Vercel and Sites targets before running the complete suite. Copy `.env.example` to `.env.local` only when testing live functions with a linked Vercel environment. Never commit a populated environment file.
+The local view uses representative demo data. `npm test` builds the Vercel and Sites targets before running the [complete suite](./tests). Copy [`.env.example`](./.env.example) to `.env.local` only when testing live functions with a linked Vercel environment. Never commit a populated environment file.
 
 ## The useful limit
 
