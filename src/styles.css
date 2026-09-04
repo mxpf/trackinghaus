@@ -6,6 +6,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Untitled Sans";
+  src: url("/fonts/UntitledSansWeb-Italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --blog-background: #211f1a;
   --blog-foreground: #f1ede3;
@@ -170,6 +178,10 @@ h2 {
 
 .insight {
   margin-top: 48px;
+}
+
+.insight h2 {
+  font-style: italic;
 }
 
 .insight p {

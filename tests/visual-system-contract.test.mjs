@@ -10,17 +10,22 @@ const weeklyReading = new URL("../src/WeeklyReading.jsx", import.meta.url);
 const fonts = new URL("../public/fonts/", import.meta.url);
 const visualQa = new URL("../qa/compare.html", import.meta.url);
 
-test("uses only the licensed Untitled Sans Regular face", async () => {
+test("uses only the licensed Untitled Sans Regular and Italic faces", async () => {
   const [css, qaSource, fontFiles] = await Promise.all([
     readFile(styles, "utf8"),
     readFile(visualQa, "utf8"),
     readdir(fonts),
   ]);
   assert.match(css, /UntitledSansWeb-Regular\.woff2/);
+  assert.match(css, /UntitledSansWeb-Italic\.woff2/);
+  assert.match(css, /\.insight h2\s*{\s*font-style:\s*italic;/);
   assert.match(qaSource, /UntitledSansWeb-Regular\.woff2/);
   assert.doesNotMatch(css, /UntitledSansWeb-(?:Light|Medium)\.woff2/);
   assert.doesNotMatch(css, /font-weight:\s*(?:300|500)/);
-  assert.deepEqual(fontFiles.sort(), ["UntitledSansWeb-Regular.woff2"]);
+  assert.deepEqual(fontFiles.sort(), [
+    "UntitledSansWeb-Italic.woff2",
+    "UntitledSansWeb-Regular.woff2",
+  ]);
 });
 
 test("mirrors the Thinkinghaus two-column visual system and preserves mobile width", async () => {

@@ -13,7 +13,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The product name is **Trackinghaus alpha**.
 - The selected mock in `reference/trackinghaus-selected.png` is the visual source of truth.
 - Use the shared permanently dark “super normal” language from the portfolio and Thinkinghaus: warm near-black `#1c1c1a`, warm off-white `#eeede9`, generous empty space, quiet text links, and no cards, shadows, gradients, or decorative UI.
-- Typography uses the licensed Untitled Sans Regular webfont exclusively at 16px/24px. Build hierarchy with placement, spacing, and color rather than other font weights or synthesized bold.
+- Typography uses the licensed Untitled Sans Regular and Italic webfonts exclusively at 16px/24px. The single weekly observation headline uses Italic to distinguish interpretation from evidence; all other copy remains upright Regular. Build the remaining hierarchy with placement, spacing, and color rather than other font weights or synthesized bold.
 - All resting copy uses the same warm off-white ink color, `#eeede9`; do not mute evidence labels, values, writing metadata, or loading copy with reduced opacity. Hover may use the shared quiet gray `#8f8f93`, while disabled-state opacity may still communicate interaction state.
 - Desktop uses an asymmetric two-column composition with the product name at upper left, the weekly reading in the right column, and navigation/privacy language along the bottom edge.
 - The product is an anti-dashboard for independent writers: one useful weekly observation, evidence on demand, and no visitor profiles or cookies.
