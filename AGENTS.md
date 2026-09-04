@@ -13,7 +13,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The product name is **Trackinghaus alpha**.
 - The selected mock in `reference/trackinghaus-selected.png` is the visual source of truth.
 - Use the shared permanently dark “super normal” language from the portfolio and Thinkinghaus: warm near-black `#1c1c1a`, warm off-white `#eeede9`, generous empty space, quiet text links, and no cards, shadows, gradients, or decorative UI.
-- Typography uses the real Untitled Sans web family. Default copy is Light at 16px/24px, ordinary labels and actions are Regular, and primary identity/headings use Medium.
+- Typography uses the licensed Untitled Sans Regular webfont exclusively at 16px/24px. Build hierarchy with placement, spacing, and color rather than other font weights or synthesized bold.
 - All resting copy uses the same warm off-white ink color, `#eeede9`; do not mute evidence labels, values, writing metadata, or loading copy with reduced opacity. Hover may use the shared quiet gray `#8f8f93`, while disabled-state opacity may still communicate interaction state.
 - Desktop uses an asymmetric two-column composition with the product name at upper left, the weekly reading in the right column, and navigation/privacy language along the bottom edge.
 - The product is an anti-dashboard for independent writers: one useful weekly observation, evidence on demand, and no visitor profiles or cookies.
@@ -33,7 +33,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Match the current portfolio and Thinkinghaus typography throughout at 16px/24px. Desktop uses the shared 24px top inset and aligned two-column start. Chart dates use compact numeric month/day labels such as `8/3`.
 - The visible product name uses the shared letter-cascade entrance also used by Thinkinghaus and the portfolio: letters rise 5px and resolve left-to-right at 40ms intervals with the existing typography unchanged. It runs once when the header appears and becomes static immediately for reduced-motion users.
 - Chart points use centered numeric dates only; do not restore weekday labels or a “Today” label. The evidence note describes the strongest source only, while the privacy promise appears once in the footer. Mobile evidence and footer spacing should remain compact.
-- The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column and the deployment’s GitHub repository sits in the right column. Footer links have no underlines; contextual inline links in body copy are underlined.
+- The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column and a final “Code” link to the deployment’s GitHub repository sits in the right column. Footer links have no underlines; contextual inline links in body copy are underlined.
 - Keep paragraph groups compact: one 24px line or at most two 24px lines of vertical space between related blocks.
 - Weekly language is deterministic for the alpha. Analytics chooses the signal; no LLM is required to operate the product.
 - Monday email delivery is optional, uses Resend, and has an idempotency key derived from the reporting week. A deployment without email configuration remains healthy and serves the public dashboard.

@@ -1,24 +1,8 @@
 @font-face {
   font-family: "Untitled Sans";
-  src: url("/fonts/UntitledSansWeb-Light.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Untitled Sans";
   src: url("/fonts/UntitledSansWeb-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Untitled Sans";
-  src: url("/fonts/UntitledSansWeb-Medium.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 500;
   font-display: swap;
 }
 
@@ -34,7 +18,7 @@
   background: var(--ground);
   font-family: "Untitled Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 24px;
   color-scheme: dark;
   font-synthesis: none;
@@ -171,7 +155,7 @@ ol {
 h1,
 h2 {
   font: inherit;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .period {
@@ -326,7 +310,7 @@ h2 {
 
 .footer-brand {
   justify-self: start;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .site-footer .footer-nav {

@@ -47,7 +47,7 @@ export function SiteFooter({ site, revealAtEnd }) {
       {site?.repository ? (
         <nav className="footer-nav" aria-label="Primary">
           <a className="text-link" href={site.repository}>
-            GitHub
+            Code
           </a>
         </nav>
       ) : null}

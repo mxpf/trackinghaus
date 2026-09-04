@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const styles = new URL("../src/styles.css", import.meta.url);
@@ -7,6 +7,21 @@ const app = new URL("../src/App.jsx", import.meta.url);
 const footer = new URL("../src/SiteFooter.jsx", import.meta.url);
 const pieceReading = new URL("../src/ReadingByPiece.jsx", import.meta.url);
 const weeklyReading = new URL("../src/WeeklyReading.jsx", import.meta.url);
+const fonts = new URL("../public/fonts/", import.meta.url);
+const visualQa = new URL("../qa/compare.html", import.meta.url);
+
+test("uses only the licensed Untitled Sans Regular face", async () => {
+  const [css, qaSource, fontFiles] = await Promise.all([
+    readFile(styles, "utf8"),
+    readFile(visualQa, "utf8"),
+    readdir(fonts),
+  ]);
+  assert.match(css, /UntitledSansWeb-Regular\.woff2/);
+  assert.match(qaSource, /UntitledSansWeb-Regular\.woff2/);
+  assert.doesNotMatch(css, /UntitledSansWeb-(?:Light|Medium)\.woff2/);
+  assert.doesNotMatch(css, /font-weight:\s*(?:300|500)/);
+  assert.deepEqual(fontFiles.sort(), ["UntitledSansWeb-Regular.woff2"]);
+});
 
 test("mirrors the Thinkinghaus two-column visual system and preserves mobile width", async () => {
   const css = await readFile(styles, "utf8");

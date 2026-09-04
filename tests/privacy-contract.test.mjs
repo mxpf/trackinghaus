@@ -20,6 +20,8 @@ test("public footer links back to the configured blog and source repository", as
   assert.match(footer, /href=\{site\.origin\}/);
   assert.match(footer, /\{site\.name\}/);
   assert.match(footer, /href=\{site\.repository\}/);
+  assert.match(footer, />\s*Code\s*</);
+  assert.doesNotMatch(footer, />\s*GitHub\s*</);
   assert.doesNotMatch(footer, /thinking\.haus/);
   assert.match(
     summary,

@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Trackinghaus visual QA</title>
     <style>
+      @font-face {
+        font-family: "Untitled Sans";
+        src: url("../public/fonts/UntitledSansWeb-Regular.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+
       * { box-sizing: border-box; }
       body {
         margin: 0;
         padding: 24px;
         background: #e8e8e4;
         color: #1c1c1a;
-        font: 14px/20px -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+        font: 400 14px/20px "Untitled Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
       main {
         display: grid;
