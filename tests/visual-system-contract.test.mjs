@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const styles = new URL("../src/styles.css", import.meta.url);
+const palette = new URL("../src/thinkinghaus-palette.css", import.meta.url);
 const app = new URL("../src/App.jsx", import.meta.url);
 const footer = new URL("../src/SiteFooter.jsx", import.meta.url);
 const pieceReading = new URL("../src/ReadingByPiece.jsx", import.meta.url);
@@ -29,10 +30,19 @@ test("uses only the licensed Untitled Sans Regular and Italic faces", async () =
 });
 
 test("mirrors the Thinkinghaus two-column visual system and preserves mobile width", async () => {
-  const css = await readFile(styles, "utf8");
-  assert.match(css, /--blog-background:\s*#211f1a/);
-  assert.match(css, /--blog-foreground:\s*#f1ede3/);
-  assert.match(css, /--blog-muted:\s*#9a9285/);
+  const [css, tokens] = await Promise.all([readFile(styles, "utf8"), readFile(palette, "utf8")]);
+  assert.match(css, /@import "\.\/thinkinghaus-palette\.css"/);
+  assert.match(tokens, /Thinkinghaus palette v0\.5, pinned from mxpf\/thinkinghaus-palette@e37b642b6903788cc3ff7cbb522c4644c16fe6fd/);
+  assert.match(tokens, /--th-neutral-0:\s*#F4EDDF/);
+  assert.match(tokens, /--th-neutral-400:\s*#AFADA6/);
+  assert.match(tokens, /--th-neutral-500:\s*#9C9281/);
+  assert.match(tokens, /--th-neutral-1000:\s*#1C1811/);
+  assert.match(tokens, /--blog-background:\s*var\(--th-bg\)/);
+  assert.match(tokens, /--blog-foreground:\s*var\(--th-text\)/);
+  assert.match(css, /--article-copy:\s*var\(--blog-body\)/);
+  assert.match(css, /--rule:\s*var\(--th-border\)/);
+  assert.match(css, /\.insight p\s*{[^}]*color:\s*var\(--blog-body\);/s);
+  assert.match(css, /\.evidence > p\s*{[^}]*color:\s*var\(--blog-body\);/s);
   assert.match(css, /grid-template-columns:\s*minmax\(0, 38fr\) minmax\(0, 62fr\)/);
   assert.match(css, /\.site-footer\s*{[^}]*grid-template-columns:\s*minmax\(0, 38fr\) minmax\(0, 62fr\)/s);
   assert.match(css, /\.article-column\s*{[^}]*width:\s*62%;[^}]*max-inline-size:\s*none;/s);
@@ -43,13 +53,22 @@ test("mirrors the Thinkinghaus two-column visual system and preserves mobile wid
 });
 
 test("keeps article links light on hover and limits footer reveal to article pages", async () => {
-  const [css, source] = await Promise.all([readFile(styles, "utf8"), readFile(footer, "utf8")]);
-  assert.match(css, /\.article-body a:hover,[\s\S]*?color:\s*var\(--blog-foreground\);[\s\S]*?opacity:\s*1;/);
-  assert.match(css, /\.inline-link:hover,[\s\S]*?color:\s*var\(--blog-foreground\);[\s\S]*?opacity:\s*1;/);
-  assert.match(css, /--article-copy:\s*#ada59b/);
-  assert.match(css, /\.inline-link,[\s\S]*?color:\s*var\(--article-copy\);/);
-  assert.match(css, /a\s*{\s*color:\s*inherit;\s*text-decoration:\s*none;\s*transition:\s*opacity 160ms ease;/);
-  assert.match(css, /a:hover,\s*a:focus-visible\s*{\s*opacity:\s*0\.48;/);
+  const [css, source, tokens] = await Promise.all([
+    readFile(styles, "utf8"),
+    readFile(footer, "utf8"),
+    readFile(palette, "utf8"),
+  ]);
+  assert.match(css, /\.article-body a:hover,[\s\S]*?color:\s*var\(--blog-foreground\);/);
+  assert.match(css, /\.inline-link:hover,[\s\S]*?color:\s*var\(--blog-foreground\);/);
+  assert.match(css, /\.inline-link,[\s\S]*?color:\s*var\(--th-link\);/);
+  assert.match(css, /a\s*{\s*color:\s*inherit;\s*text-decoration:\s*none;\s*transition:\s*color 160ms ease;/);
+  assert.match(css, /a:hover,\s*a:focus-visible\s*{\s*color:\s*var\(--blog-body\);/);
+  assert.match(css, /outline:\s*1px solid var\(--th-focus\)/);
+  assert.match(css, /::selection\s*{[\s\S]*?color:\s*var\(--th-selection-text\);[\s\S]*?background:\s*var\(--th-selection-bg\);/);
+  assert.match(tokens, /--th-link:\s*var\(--th-patina-400\)/);
+  assert.match(tokens, /--th-focus:\s*var\(--th-ochre-400\)/);
+  assert.match(tokens, /--th-success:\s*var\(--th-moss-400\)/);
+  assert.match(tokens, /--th-error:\s*var\(--th-clay-400\)/);
   assert.match(css, /\.is-article-page \.site-footer\.site-footer--end-reveal\.is-armed/);
   assert.match(css, /article-footer-reveal 220ms ease-out both/);
   assert.match(source, /window\.addEventListener\("scroll", revealAtScrollEnd, \{ passive: true \}\)/);
