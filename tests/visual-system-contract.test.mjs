@@ -32,7 +32,7 @@ test("uses only the licensed Untitled Sans Regular and Italic faces", async () =
 test("mirrors the Thinkinghaus two-column visual system and preserves mobile width", async () => {
   const [css, tokens] = await Promise.all([readFile(styles, "utf8"), readFile(palette, "utf8")]);
   assert.match(css, /@import "\.\/thinkinghaus-palette\.css"/);
-  assert.match(tokens, /Thinkinghaus palette v0\.5, pinned from mxpf\/thinkinghaus-palette@e37b642b6903788cc3ff7cbb522c4644c16fe6fd/);
+  assert.match(tokens, /Thinkinghaus palette v0\.6, pinned from mxpf\/thinkinghaus-palette@7ac354fa15ac0798db84ed4291215d8a44f35947/);
   assert.match(tokens, /--th-neutral-0:\s*#F4EDDF/);
   assert.match(tokens, /--th-neutral-400:\s*#AFADA6/);
   assert.match(tokens, /--th-neutral-500:\s*#9C9281/);
@@ -61,11 +61,13 @@ test("keeps article links light on hover and limits footer reveal to article pag
   assert.match(css, /\.article-body a:hover,[\s\S]*?color:\s*var\(--blog-foreground\);/);
   assert.match(css, /\.inline-link:hover,[\s\S]*?color:\s*var\(--blog-foreground\);/);
   assert.match(css, /\.inline-link,[\s\S]*?color:\s*var\(--th-link\);/);
+  assert.match(css, /\.inline-link:visited,[\s\S]*?\.article-body a:visited\s*{[\s\S]*?color:\s*var\(--th-link\);/);
   assert.match(css, /a\s*{\s*color:\s*inherit;\s*text-decoration:\s*none;\s*transition:\s*color 160ms ease;/);
   assert.match(css, /a:hover,\s*a:focus-visible\s*{\s*color:\s*var\(--blog-body\);/);
   assert.match(css, /outline:\s*1px solid var\(--th-focus\)/);
   assert.match(css, /::selection\s*{[\s\S]*?color:\s*var\(--th-selection-text\);[\s\S]*?background:\s*var\(--th-selection-bg\);/);
-  assert.match(tokens, /--th-link:\s*var\(--th-patina-400\)/);
+  assert.match(tokens, /--th-link:\s*var\(--th-body\)/);
+  assert.match(tokens, /\[data-theme="light"\][\s\S]*?--th-link:\s*var\(--th-neutral-800\)/);
   assert.match(tokens, /--th-focus:\s*var\(--th-ochre-400\)/);
   assert.match(tokens, /--th-success:\s*var\(--th-moss-400\)/);
   assert.match(tokens, /--th-error:\s*var\(--th-clay-400\)/);

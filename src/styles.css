@@ -221,7 +221,9 @@ h2 {
 }
 
 .inline-link,
-.article-body a {
+.inline-link:visited,
+.article-body a,
+.article-body a:visited {
   display: inline;
   color: var(--th-link);
   text-decoration: underline;
