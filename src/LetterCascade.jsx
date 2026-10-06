@@ -5,7 +5,9 @@ export function LetterCascade({ text }) {
         <b
           aria-hidden="true"
           key={`${character}-${index}`}
-          style={{ "--letter-cascade-index": index }}
+          style={/** @type {React.CSSProperties & Record<string, number>} */ ({
+            "--letter-cascade-index": index,
+          })}
         >
           {character === " " ? "\u00a0" : character}
         </b>

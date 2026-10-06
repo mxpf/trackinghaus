@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const styles = new URL("../src/styles.css", import.meta.url);
+const document = new URL("../index.html", import.meta.url);
 const palette = new URL("../src/thinkinghaus-palette.css", import.meta.url);
 const app = new URL("../src/App.jsx", import.meta.url);
 const footer = new URL("../src/SiteFooter.jsx", import.meta.url);
@@ -10,6 +11,13 @@ const pieceReading = new URL("../src/ReadingByPiece.jsx", import.meta.url);
 const weeklyReading = new URL("../src/WeeklyReading.jsx", import.meta.url);
 const fonts = new URL("../public/fonts/", import.meta.url);
 const visualQa = new URL("../qa/compare.html", import.meta.url);
+
+test("keeps browser metadata aligned with the dark aggregate-reading model", async () => {
+  const source = await readFile(document, "utf8");
+  assert.match(source, /name="theme-color" content="#1C1811"/);
+  assert.match(source, /how your writing is found and revisited/);
+  assert.doesNotMatch(source, /how people find and return/);
+});
 
 test("uses only the licensed Untitled Sans Regular and Italic faces", async () => {
   const [css, qaSource, fontFiles] = await Promise.all([

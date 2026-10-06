@@ -30,6 +30,8 @@ function cleanPath(value) {
 
 function cleanTitle(value, path) {
   if (typeof value !== "string") return path;
+  // Control characters are intentionally stripped from user-supplied titles.
+  // eslint-disable-next-line no-control-regex
   const title = value.replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, 180);
   return title || path;
 }
