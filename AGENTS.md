@@ -36,6 +36,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The separate bottom footer mirrors Thinkinghaus: the configured host blog links from the left column and a final “Code” link to the deployment’s GitHub repository sits in the right column. Footer links have no underlines; contextual inline links in body copy are underlined.
 - Keep paragraph groups compact: one 24px line or at most two 24px lines of vertical space between related blocks.
 - Weekly language is deterministic for the alpha. Analytics chooses the signal; no LLM is required to operate the product.
+- The weekly page and Monday email share one summary. Lead with plain totals and the previous seven days' count on weeks with fewer than 10 reads or no qualifying pattern. Start page observations at a gain of 5 reads. Highlight search for that page only when it accounts for at least 5 reads and 35% of the page's reads. Use a returning-read observation only if no page qualifies and more than half the reads are returning. Put the counts behind each observation in the detail.
+- Label the existing `direct` category “No external source recorded.” If it is the largest source category, give its count and the total in the evidence note.
 - Monday email delivery is optional, uses Resend, and has an idempotency key derived from the reporting week. A deployment without email configuration remains healthy and serves the public dashboard.
 
 ## Current visual-system mapping

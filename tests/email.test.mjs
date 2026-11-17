@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { renderWeeklyEmail } from "../lib/email.js";
+import { buildDemoWeekly } from "../src/demo-data.js";
 import { withEnvironment } from "./helpers.mjs";
 
 test("weekly email escapes publication data and preserves the privacy statement", async () => {
@@ -28,4 +29,13 @@ test("weekly email escapes publication data and preserves the privacy statement"
       );
     },
   );
+});
+
+test("renders the plain weekly totals in both email formats", () => {
+  const { html, text } = renderWeeklyEmail(buildDemoWeekly());
+  assert.match(html, />1 read<\/td>/);
+  for (const body of [html, text]) {
+    assert.match(body, /7 reads across 4 pages\./);
+    assert.match(body, /The previous seven days recorded 8 reads\./);
+  }
 });

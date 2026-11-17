@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { loadWeekly } from "./api.js";
-import { demoWeekly } from "./demo-data.js";
+import { buildDemoWeekly } from "./demo-data.js";
 import { LetterCascade } from "./LetterCascade.jsx";
 import { ReadingByPiece } from "./ReadingByPiece.jsx";
 import { SiteFooter } from "./SiteFooter.jsx";
@@ -10,7 +10,7 @@ const demoMode = import.meta.env.DEV && import.meta.env.VITE_USE_LIVE_API !== "t
 
 function initialState() {
   return demoMode
-    ? { status: "ready", data: demoWeekly, code: null }
+    ? { status: "ready", data: buildDemoWeekly(), code: null }
     : { status: "loading", data: null, code: null };
 }
 
