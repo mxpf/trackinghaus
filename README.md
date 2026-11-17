@@ -2,13 +2,15 @@
 
 Trackinghaus alpha gives independent writers a weekly look at how their work is read. You run it in your own Vercel project and keep the counts in your own database.
 
-The weekly reading compares the seven days through today with the seven days before them. It shows one observation, a chart of daily reads, and the counts behind the observation. **Reading by piece** shows how each piece did over the same two periods.
+The weekly reading compares the seven days through today with the seven days before them. On a quiet week, it leads with a plain count, such as “7 reads across 4 pages,” and shows the previous week’s total underneath. When a clear change stands out, it gives one short observation with the counts behind it. The chart shows daily reads. **Reading by piece** shows the change for pages with reads in the current period.
 
 See how it works on Thinkinghaus. [Weekly reading](https://trackinghaus-alpha.vercel.app/) · [Reading by piece](https://trackinghaus-alpha.vercel.app/?view=pieces)
 
 ## What it counts
 
 The tracker counts eligible page loads as reads. It sends the page path and title, a broad source category (direct, search, social, or referral), and whether the browser has visited before. The browser skips repeat loads of the same page within the same session and UTC day when session storage is available. The tracker respects Global Privacy Control and Do Not Track. [Tracker code](./public/tracker.js)
+
+In the weekly reading, **No external source recorded** includes clicks within the publication and page loads where the browser did not provide a source.
 
 The server adds each accepted read to the day’s totals for that page and source. The tracker leaves visitor IDs, query strings, URL fragments, and the full referring URL out of the data it sends. Trackinghaus keeps no IP addresses, visitor profiles, or individual reading histories. [Database schema](./db/schema.sql)
 
@@ -65,7 +67,7 @@ TRACKINGHAUS_FROM_EMAIL=Trackinghaus alpha <stats@example.com>
 CRON_SECRET=replace-with-a-long-random-secret
 ```
 
-Vercel schedules the job for Mondays at 12:00 UTC. The email covers the seven days ending yesterday in your publication’s time zone. Retries reuse the same send key for that reporting period. The public reading works without email. [Vercel Cron documentation](https://vercel.com/docs/schedules/cron-jobs)
+Vercel schedules the job for Mondays at 12:00 UTC. The email covers the seven days ending yesterday in your publication’s time zone and follows the same rules for choosing what to highlight. Retries reuse the same send key for that reporting period. The public reading works without email. [Vercel Cron documentation](https://vercel.com/docs/schedules/cron-jobs)
 
 ## Configuration
 
