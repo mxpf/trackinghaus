@@ -1,47 +1,24 @@
 # Trackinghaus alpha
 
-Trackinghaus alpha counts reads without keeping readers.
+Trackinghaus alpha gives independent writers a weekly look at how their work is read. You run it in your own Vercel project and keep the counts in your own database.
 
-It is a small, self-hosted analytics tool for one independent publication. A [small script](./public/tracker.js) notices that a page was read. Before anything leaves the browser, the referrer has become a broad source category and the URL has lost its query string and fragment. The server folds what remains directly into daily counters. It does not create a raw event log.
+The weekly reading compares the seven days through today with the seven days before them. It shows one observation, a chart of daily reads, and the counts behind the observation. **Reading by piece** shows how each piece did over the same two periods.
 
-The result is a weekly reading rather than a dashboard to operate: one observation, the evidence beneath it, and a comparison with the previous week. The language is deterministic. Trackinghaus does not need an LLM to understand the numbers.
+See how it works on Thinkinghaus. [Weekly reading](https://trackinghaus-alpha.vercel.app/) · [Reading by piece](https://trackinghaus-alpha.vercel.app/?view=pieces)
 
-[Thinkinghaus](https://thinking.haus) is the reference installation. Its public reading lives at [trackinghaus-alpha.vercel.app](https://trackinghaus-alpha.vercel.app).
+## What it counts
 
-[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmxpf%2Ftrackinghaus&env=TRACKINGHAUS_SITE_KEY%2CTRACKINGHAUS_SITE_NAME%2CTRACKINGHAUS_ALLOWED_ORIGINS%2CTRACKINGHAUS_TIME_ZONE&envDescription=Tell%20Trackinghaus%20which%20blog%20it%20should%20count.&envLink=https%3A%2F%2Fgithub.com%2Fmxpf%2Ftrackinghaus%23configuration&project-name=trackinghaus&repository-name=trackinghaus)
+The tracker counts eligible page loads as reads. It sends the page path and title, a broad source category (direct, search, social, or referral), and whether the browser has visited before. The browser skips repeat loads of the same page within the same session and UTC day when session storage is available. The tracker respects Global Privacy Control and Do Not Track. [Tracker code](./public/tracker.js)
 
-![Trackinghaus weekly reading view](docs/preview.png)
+The server adds each accepted read to the day’s totals for that page and source. The tracker leaves visitor IDs, query strings, URL fragments, and the full referring URL out of the data it sends. Trackinghaus keeps no IP addresses, visitor profiles, or individual reading histories. [Database schema](./db/schema.sql)
 
-## What it knows
+No individual visitors are identified. Trackinghaus alpha stores only aggregate counters.
 
-Each accepted read adds one to an [aggregate counter](./db/schema.sql). Trackinghaus keeps only:
+## Set up your publication
 
-- the publication key
-- the calendar day
-- the page path and title
-- a source category: direct, search, social, or referral
-- the read count
-- the returning-read count
+Each deployment tracks one publication. Its weekly reading is public so you can link to it from your blog. [Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmxpf%2Ftrackinghaus&env=TRACKINGHAUS_SITE_KEY%2CTRACKINGHAUS_SITE_NAME%2CTRACKINGHAUS_ALLOWED_ORIGINS%2CTRACKINGHAUS_TIME_ZONE&envDescription=Tell%20Trackinghaus%20which%20blog%20it%20should%20count.&envLink=https%3A%2F%2Fgithub.com%2Fmxpf%2Ftrackinghaus%23configuration&project-name=trackinghaus&repository-name=trackinghaus)
 
-That is enough to see that search brought an older piece back into view, or that a page found a little momentum. It is not enough to reconstruct an individual reading history.
-
-The tracker does not send a user agent, cookie, visitor ID, raw referrer, query string, or URL fragment. Trackinghaus does not store IP addresses or visitor profiles. It respects [Global Privacy Control](https://globalprivacycontrol.org/) and [Do Not Track](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/DNT).
-
-The browser keeps two small facts to itself. Session storage prevents the same page from being counted twice in one day. Local storage remembers only whether this browser has visited before. Neither local key is sent to the server.
-
-The public dashboard therefore contains only aggregate counters. No individual visitors are identified. Trackinghaus alpha stores only aggregate counters.
-
-## How the week appears
-
-The public view reads the current seven-day window and compares it with the seven days before it. The [summary code](./lib/summary.js) chooses the strongest useful signal. “Reading by piece” shows the same comparison page by page.
-
-There are no accounts, real-time activity feeds, audience profiles, or controls waiting to be managed. Monday email is optional. Without email configuration, the public reading continues to work.
-
-## One deployment, one publication
-
-Trackinghaus is public code, but each installation belongs to the writer running it. One Vercel project tracks one publication and connects to that publication’s own database, domain, and optional email account. Another writer uses the same repository with different environment values; there is no site-specific fork.
-
-Start with these values:
+Set your publication’s details in Vercel. Replace these examples with your own values.
 
 ```text
 TRACKINGHAUS_SITE_KEY=small-internet
@@ -50,23 +27,23 @@ TRACKINGHAUS_ALLOWED_ORIGINS=https://example.com,https://www.example.com
 TRACKINGHAUS_TIME_ZONE=America/New_York
 ```
 
-The site key is a stable identifier. The site name appears in the footer. The first allowed origin becomes the footer link; any additional comma-separated origins contribute to the same aggregate reading. The timezone determines which calendar day receives a read.
+The site key identifies your publication. The footer uses the site name and links to the first allowed origin. All listed origins feed the same counts. List only the live addresses that should contribute to those counts. The time zone sets the calendar day used for reporting.
 
 ### Connect the database
 
-Add [Neon Postgres](https://vercel.com/marketplace/neon) from the Vercel Marketplace. The integration supplies `DATABASE_URL`. Trackinghaus creates its aggregate table on the first read, so there is no separate migration step.
+Connect a Neon Postgres database to your Vercel project and make sure its connection string is available as `DATABASE_URL`. Trackinghaus creates the table automatically the first time it uses the database. [Neon on Vercel](https://vercel.com/marketplace/neon)
 
-After setting the environment values, redeploy and visit:
+Redeploy after setting the environment variables. Open this path on your deployment to check the configuration.
 
 ```text
 https://YOUR-TRACKINGHAUS-DOMAIN/api/health
 ```
 
-`database` and `site` should be `true`. `email` may remain `false`.
+Look for `configured.database` and `configured.site` to be `true`. Then open the weekly reading to check that the app can read from the database. `configured.email` can be `false` if you skip email setup.
 
 ### Add the tracker
 
-Place the script once in the publication’s shared layout, immediately before `</body>`:
+Add this script once in your publication’s shared layout, just before `</body>`.
 
 ```html
 <script
@@ -76,31 +53,31 @@ Place the script once in the publication’s shared layout, immediately before `
 ></script>
 ```
 
-`data-site` must match `TRACKINGHAUS_SITE_KEY`. Open a page on the publication, then open the Trackinghaus deployment. The first reading will appear as aggregate counts arrive.
+Use your deployment’s address for `src` and the same site key you set in Vercel for `data-site`. Open a page on your publication, then check your Trackinghaus reading for the first count. A browser with Global Privacy Control or Do Not Track enabled will skip that test visit.
 
 ### Send the Monday reading
 
-This part is optional. Add [Resend](https://vercel.com/marketplace/resend) from the Vercel Marketplace, verify a sending domain, and set:
+To get the weekly reading by email, connect Resend to your Vercel project and verify the domain you’ll send from. The integration adds `RESEND_API_KEY`. Set these three values in Vercel and redeploy. [Resend on Vercel](https://vercel.com/marketplace/resend)
 
 ```text
 TRACKINGHAUS_TO_EMAIL=you@example.com
 TRACKINGHAUS_FROM_EMAIL=Trackinghaus alpha <stats@example.com>
-CRON_SECRET=a-long-random-value
+CRON_SECRET=replace-with-a-long-random-secret
 ```
 
-Resend supplies `RESEND_API_KEY`. When all four email values are present, [Vercel Cron](https://vercel.com/docs/cron-jobs) sends the previous week’s reading each Monday. The reporting week is also used as the idempotency key, so retrying the job does not intentionally send the same reading twice.
+Vercel schedules the job for Mondays at 12:00 UTC. The email covers the seven days ending yesterday in your publication’s time zone. Retries reuse the same send key for that reporting period. The public reading works without email. [Vercel Cron documentation](https://vercel.com/docs/schedules/cron-jobs)
 
 ## Configuration
 
-| Variable | Required | What it changes |
+| Variable | Default or requirement | What it does |
 | --- | --- | --- |
-| `DATABASE_URL` | Yes | Neon Postgres connection supplied by the integration. |
-| `TRACKINGHAUS_SITE_KEY` | Yes | Stable publication key; must match the tracker’s `data-site`. |
-| `TRACKINGHAUS_SITE_NAME` | Yes | Publication name shown in the footer. |
-| `TRACKINGHAUS_ALLOWED_ORIGINS` | Yes | Comma-separated `https://` origins permitted to send reads. |
-| `TRACKINGHAUS_TIME_ZONE` | Yes | IANA timezone used for calendar days; defaults to `UTC`. |
-| `TRACKINGHAUS_DASHBOARD_URL` | No | Public reading URL; normally inferred by Vercel. |
-| `TRACKINGHAUS_REPOSITORY_URL` | No | Source link shown in the footer; normally inferred from Vercel Git metadata. |
+| `DATABASE_URL` | Required | Neon Postgres connection string. |
+| `TRACKINGHAUS_SITE_KEY` | `my-blog` | Publication key. It must match the tracker’s `data-site`. |
+| `TRACKINGHAUS_SITE_NAME` | `My blog` | Publication name in the footer. |
+| `TRACKINGHAUS_ALLOWED_ORIGINS` | Required | Comma-separated publication origins, such as `https://example.com`. |
+| `TRACKINGHAUS_TIME_ZONE` | `UTC` | Time zone for reporting, such as `America/New_York`. |
+| `TRACKINGHAUS_DASHBOARD_URL` | Inferred on Vercel | Overrides the link to the public reading in the weekly email. |
+| `TRACKINGHAUS_REPOSITORY_URL` | Inferred from GitHub on Vercel | Overrides the Code link in the footer. Falls back to this repository when GitHub details are unavailable. |
 | `RESEND_API_KEY` | For email | Resend credential supplied by the integration. |
 | `TRACKINGHAUS_TO_EMAIL` | For email | Recipient of the Monday reading. |
 | `TRACKINGHAUS_FROM_EMAIL` | For email | Verified sender name and address. |
@@ -122,17 +99,18 @@ tests/     privacy, API, summary, email, date, visual, and hosting checks
 
 ## Local work
 
+Use Node.js 24 or later for local development. Start the app with demo data using these commands.
+
 ```bash
 npm ci
 npm run dev
-npm test
 ```
 
-The local view uses representative demo data. `npm test` builds the Vercel and Sites targets before running the [complete suite](./tests). Copy [`.env.example`](./.env.example) to `.env.local` only when testing live functions with a linked Vercel environment. Never commit a populated environment file.
+Open the local URL printed in the terminal. The demo needs no database or email account.
 
-## The useful limit
+Run `npm test` to check the code, build the app and its Sites package, and run the tests. The Sites package includes the frontend and a static worker. The database and email functions run on Vercel.
 
-Trackinghaus supports one publication per deployment. It does not include accounts, billing, a multi-site control panel, or a private store of individual activity. That limit keeps each writer’s data and service accounts under their own control, and keeps Trackinghaus focused on aggregate weekly reading.
+Use `.env.example` as a reference when testing the API with a linked Vercel environment. Keep real credentials out of Git. [Example environment file](./.env.example)
 
 ## License
 
