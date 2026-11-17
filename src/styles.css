@@ -191,6 +191,7 @@ h2 {
 .insight p {
   margin-top: 24px;
   color: var(--blog-body);
+  overflow-wrap: anywhere;
 }
 
 .trend {
@@ -384,10 +385,6 @@ h2 {
   border: 0;
 }
 
-.nowrap {
-  white-space: nowrap;
-}
-
 @media (max-width: 767px) {
   .app-shell {
     min-height: 100dvh;
@@ -406,10 +403,6 @@ h2 {
 
   .article-column {
     width: 100%;
-  }
-
-  .nowrap {
-    white-space: normal;
   }
 
   .evidence {

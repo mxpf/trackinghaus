@@ -104,7 +104,7 @@ export function WeeklyReading({ data, piecesHref }) {
       <div className="insight">
         <h2>{data.insight.headline}</h2>
         <p>
-          <span className="nowrap">{firstDetail}</span>
+          {firstDetail}
           {secondDetail ? (
             <>
               <br />
